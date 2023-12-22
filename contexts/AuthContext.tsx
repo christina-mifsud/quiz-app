@@ -8,16 +8,7 @@ import {
 } from "react";
 import { auth } from "@/firebase/config";
 import { Auth, onAuthStateChanged, User } from "firebase/auth";
-
-///////// HELP!! do these go here or in a separate file with types?
-interface AuthContextValue {
-  currentUser: User | null | undefined;
-  setCurrentUser: (user: User | null | undefined) => void;
-}
-interface AuthProviderProps {
-  children: ReactNode;
-}
-//////////
+import { AuthContextValue, AuthProviderProps } from "@/types";
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
@@ -43,7 +34,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const value: AuthContextValue = { currentUser, setCurrentUser };
 
   return (
-    <AuthContext.Provider value={value}>
+    <AuthContext.Provider value={{ currentUser, setCurrentUser }}>
       {!loading && children}
     </AuthContext.Provider>
   );
