@@ -10,7 +10,9 @@ import { auth } from "@/firebase/config";
 import { Auth, onAuthStateChanged, User } from "firebase/auth";
 import { AuthContextValue, AuthProviderProps } from "@/types";
 
-const AuthContext = createContext<AuthContextValue | undefined>(undefined);
+export const AuthContext = createContext<AuthContextValue | undefined>(
+  undefined
+);
 
 // useAuth Hook - person requesting access to AuthProvider (manager) instead of directly managing the authentication state (going directly for access)
 export function useAuth() {
