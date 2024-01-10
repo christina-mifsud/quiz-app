@@ -1,7 +1,8 @@
 "use client";
 import { useState } from "react";
 import { auth } from "@/firebase/config";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "./useAuth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 ///////// HELP!! do these go here or in a separate file with types?
 interface SignupResult {
@@ -20,7 +21,9 @@ export function useSignup(): SignupResult {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await auth.createUserWithEmailAndPassword(
+      // const response = await fireAuth.createUserWithEmailAndPassword(email, password);
+      const response = await createUserWithEmailAndPassword(
+        auth,
         email,
         password
       );
@@ -36,6 +39,7 @@ export function useSignup(): SignupResult {
       setError(error.message);
       setIsLoading(false);
       throw new Error(error.message);
+      // throw new Error("wronggggg");
     }
   };
 
