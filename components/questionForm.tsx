@@ -7,13 +7,16 @@ import { quiz } from "@/app/(questions)/questions-data";
 const QuestionForm = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState("");
+  const [selectedAnswerIndex, setSelectedAnswerIndex] = useState(null);
 
   const router = useRouter();
   const { questions } = quiz; // getting single question object from questions objects
   const { question, choices, correctAnswer } = questions[currentQuestion]; // destructuring single question object to access keys & values
 
   function handleClickNext() {
-    setCurrentQuestion((prev) => prev + 1);
+    // reset to null so as not to affect next question
+    // setSelectedAnswerIndex(null);
+    setCurrentQuestion((prevQuestion) => prevQuestion + 1);
   }
 
   function handleSelectedAnswer(answer: string) {
@@ -31,14 +34,22 @@ const QuestionForm = () => {
       <h3>Question</h3>
       <p>{question}</p>
       <ul>
-        {choices.map((answer) => (
-          <li onClick={() => handleSelectedAnswer(answer)} key={answer}>
+        {choices.map((answer, index) => (
+          <li
+            onClick={() => handleSelectedAnswer(answer)}
+            key={answer}
+            // className={selectedAnswerIndex === index ? "selected-answer" : null}
+          >
             {answer}
           </li>
         ))}
       </ul>
-      {/* check is currentQuestion the last question? if so, change button to finish */}
-      <button onClick={handleClickNext}>
+      {/* check is currentQuestion the last question? if so, change button to finish &
+      set selectedAnswerIndex to null again when next/finish is clicked */}
+      <button
+        onClick={handleClickNext}
+        //   disabled={selectedAnswerIndex === null}
+      >
         {currentQuestion === questions.length - 1 ? "Finish" : "Next"}
       </button>
     </>
