@@ -10,22 +10,36 @@ const QuestionForm = () => {
 
   const router = useRouter();
   const { questions } = quiz; // getting single question object from questions objects
-  const { question, choices } = questions[currentQuestion]; // destructuring single question object to access keys & values
+  const { question, choices, correctAnswer } = questions[currentQuestion]; // destructuring single question object to access keys & values
 
   function handleClickNext() {
     setCurrentQuestion((prev) => prev + 1);
   }
 
+  function handleSelectedAnswer(answer: string) {
+    if (answer === correctAnswer) {
+      setSelectedAnswer(true);
+      console.log("CORRECT ANS!!");
+    } else {
+      setSelectedAnswer(false);
+      console.log("WRONGGGG!!");
+    }
+  }
+
   return (
     <>
       <h3>Question</h3>
-      <p>{questions[currentQuestion].question}</p>
+      <p>{question}</p>
       <ul>
-        {choices.map((item, index) => (
-          <li key={index}>{item}</li>
+        {choices.map((answer) => (
+          <li onClick={() => handleSelectedAnswer(answer)} key={answer}>
+            {answer}
+          </li>
         ))}
       </ul>
-
+      {/* <button onClick={(event: MouseEvent) => handleSelectedAnswer(event)}>
+        Answer A
+      </button> */}
       <button onClick={(event: MouseEvent) => handleClickNext()}>NEXT</button>
     </>
   );
