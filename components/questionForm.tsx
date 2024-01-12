@@ -37,10 +37,10 @@ const QuestionForm = () => {
           </li>
         ))}
       </ul>
-      {/* <button onClick={(event: MouseEvent) => handleSelectedAnswer(event)}>
-        Answer A
-      </button> */}
-      <button onClick={(event: MouseEvent) => handleClickNext()}>NEXT</button>
+      {/* check is currentQuestion the last question? if so, change button to finish */}
+      <button onClick={handleClickNext}>
+        {currentQuestion === questions.length - 1 ? "Finish" : "Next"}
+      </button>
     </>
   );
 };
