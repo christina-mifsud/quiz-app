@@ -16,7 +16,7 @@ const SignInForm = () => {
 
     if (emailRef.current?.value && passwordRef.current?.value) {
       await signin(emailRef.current?.value, passwordRef.current?.value);
-      router.push("/");
+      router.push("/quiz");
     } else {
       setError("Wrong Password!");
     }
