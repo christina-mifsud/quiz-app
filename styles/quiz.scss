@@ -35,7 +35,10 @@
     border-radius: 0.3rem;
     color: #ff9051;
   }
-
+  .selected-answer {
+    background: #ffb18455;
+    border: 2px solid #ffb18413;
+  }
   button {
     width: 100%;
     padding: 1rem;
@@ -44,7 +47,12 @@
     color: #ffffff;
     transition: background-color 0.3s ease;
     &:hover {
-      background-color: #ffb184;
+      background-color: #ffb184af;
+    }
+    &:disabled {
+      background: #9e7eff27;
+      color: #6540d3;
+      cursor: not-allowed;
     }
   }
 }
