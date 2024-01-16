@@ -11,7 +11,7 @@ export const quiz = {
       correctAnswer: "yellow",
     },
     {
-      question: "What colour is a blueberry",
+      question: "What colour is a blueberry?",
       choices: ["yellow", "blue", "red"],
       correctAnswer: "blue",
     },

@@ -1,5 +1,5 @@
 import SignUpForm from "@/components/SignUpForm";
-import "@/app/(auth)/auth.scss";
+import "@/styles/auth.scss";
 
 export default async function SignUpPage() {
   return (
@@ -11,10 +11,3 @@ export default async function SignUpPage() {
     </div>
   );
 }
-
-//////////////////////////////////
-
-///// to do
-/// sign out component
-/// css
-/// 3 quiz pages - flow

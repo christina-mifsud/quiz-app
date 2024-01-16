@@ -1,11 +1,14 @@
 import QuestionForm from "@/components/questionForm";
-import "@/app/(auth)/auth.scss";
+import "@/styles/quiz.scss";
+// import "@/styles/auth.scss";
 
 export default async function QuestionPage() {
   return (
-    <div className="question-container">
-      <div className="question-card">
-        <h2>Fruit Quiz</h2>
+    // <div className="auth-container">
+    //   <div className="auth-card">
+    <div className="quiz-container">
+      <div className="quiz-card">
+        <h1>Fruit Quiz</h1>
         <QuestionForm />
       </div>
     </div>
