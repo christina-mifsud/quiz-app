@@ -1,6 +1,5 @@
 import SignInForm from "@/components/SignInForm";
-import "@/app/(auth)/auth.scss";
-
+import "@/styles/auth.scss";
 export default async function SignInPage() {
   return (
     <div className="auth-container">
