@@ -22,7 +22,7 @@ const SignUpForm = () => {
         setError("Passwords do not match!");
       } else {
         await signup(emailRef.current?.value, passwordRef.current?.value);
-        router.push("/");
+        router.push("/quiz");
       }
     }
   }

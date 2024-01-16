@@ -1,5 +1,5 @@
 import SignInForm from "@/components/SignInForm";
-import "@/app/auth.scss";
+import "@/app/(auth)/auth.scss";
 
 export default async function SignInPage() {
   return (
