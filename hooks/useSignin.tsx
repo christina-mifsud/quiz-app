@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { auth } from "@/firebase/config";
 import { useAuth } from "./useAuth";
-import { signInWithEmailAndPassword } from "firebase/auth";
 
 //////// in types folder? ///////
 interface SignInResult {
@@ -21,7 +20,7 @@ export function useSignin(): SignInResult {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await signInWithEmailAndPassword(auth, email, password);
+      const response = await auth.signInWithEmailAndPassword(email, password);
 
       if (!response || !response.user) {
         throw new Error("Something went wrong!");

@@ -1,13 +1,7 @@
 "use client";
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  ReactNode,
-} from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import firebase from "firebase/app";
 import { auth } from "@/firebase/config";
-import { Auth, onAuthStateChanged, User } from "firebase/auth";
 import { AuthContextValue, AuthProviderProps } from "@/types";
 
 export const AuthContext = createContext<AuthContextValue | undefined>(
@@ -21,7 +15,7 @@ export function useAuth() {
 
 // AuthProvider Component - manager of access - keeping track of who has access/is logged in etc through useAuth Hook.
 export function AuthProvider({ children }: AuthProviderProps) {
-  const [currentUser, setCurrentUser] = useState<User | null | undefined>();
+  const [currentUser, setCurrentUser] = useState<firebase.User | null>(null);
   const [loading, setLoading] = useState(true);
 
   ////// HELP!! What is happening here?
