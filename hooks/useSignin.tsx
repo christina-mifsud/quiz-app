@@ -22,7 +22,7 @@ export function useSignin(): SignInResult {
     try {
       const response = await auth.signInWithEmailAndPassword(email, password);
 
-      if (!response || !response.user) {
+      if (!response) {
         throw new Error("Something went wrong!");
       }
 
