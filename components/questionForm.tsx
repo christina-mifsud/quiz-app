@@ -38,15 +38,17 @@ const QuestionForm = () => {
       <p>{question}</p>
       <ul>
         {choices.map((answer, index) => (
-          <li
+          <div
             onClick={() => handleSelectedAnswer(answer, index)}
             key={answer}
             className={selectedAnswerIndex === index ? "selected-answer" : null}
           >
-            {answer}
-          </li>
+            <label>{answer}</label>
+            <input type="radio" name="" value="" />
+          </div>
         ))}
       </ul>
+
       {/* checking is currentQuestion the last question? if so, change button to finish &
       set selectedAnswerIndex to null again when next/finish is clicked */}
       <button onClick={handleClickNext} disabled={selectedAnswer === null}>
