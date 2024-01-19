@@ -6,11 +6,12 @@ import { useRouter } from "next/navigation";
 const ProfileForm = () => {
   const router = useRouter();
 
+  //////// Is useCallback necessary here as it's going to a different page anyway?
   async function handleSignIn(event: MouseEvent) {
     event.preventDefault();
     router.push("/signin");
   }
-
+  // same here?
   async function handleSignUp(event: MouseEvent) {
     event.preventDefault();
     router.push("/signup");

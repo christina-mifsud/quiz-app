@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
 import { quiz } from "@/app/(questions)/questions-data";
 
@@ -13,28 +13,31 @@ const QuestionForm = () => {
   const { questions } = quiz; // getting single question object from questions objects
   const { question, choices, correctAnswer } = questions[currentQuestion]; // destructuring single question object to access keys & values
 
-  function handleClickNext() {
+  const handleClickNext = useCallback(() => {
     // reset to null so as not to affect next question
     setSelectedAnswer(null);
     setSelectedAnswerIndex(null);
     setCurrentQuestion((prevQuestion) => prevQuestion + 1);
-  }
+  }, []);
 
-  function handleSelectedAnswer(answer: string, index: number) {
-    setSelectedAnswerIndex(index);
+  const handleSelectedAnswer = useCallback(
+    (answer: string, index: number) => {
+      setSelectedAnswerIndex(index);
 
-    if (answer === correctAnswer) {
-      setSelectedAnswer(true);
-      console.log("CORRECT ANS!!");
-    } else {
-      setSelectedAnswer(false);
-      console.log("WRONGGGG!!");
-    }
-  }
+      if (answer === correctAnswer) {
+        setSelectedAnswer(true);
+        console.log("CORRECT ANS!!");
+      } else {
+        setSelectedAnswer(false);
+        console.log("WRONGGGG!!");
+      }
+    },
+    [correctAnswer]
+  );
 
   return (
     <>
-      {/* <h3>Question</h3> */}
+      {/* HELP! It's re-rendering the question every time there's a click. Is it because of line14? */}
       <p>{question}</p>
       <ul>
         {choices.map((answer, index) => (

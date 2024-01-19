@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, MouseEvent } from "react";
+import { useRef, useState, MouseEvent, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useSignin } from "@/hooks/useSignin";
 
@@ -11,16 +11,20 @@ const SignInForm = () => {
   const [error, setError] = useState<string>("");
   const router = useRouter();
 
-  async function handleSignIn(event: MouseEvent) {
-    event.preventDefault();
+  // useCallback not working
+  const handleSignIn = useCallback(
+    async (event: MouseEvent) => {
+      event.preventDefault();
 
-    if (emailRef.current?.value && passwordRef.current?.value) {
-      await signin(emailRef.current?.value, passwordRef.current?.value);
-      router.push("/quiz");
-    } else {
-      setError("Wrong Password!");
-    }
-  }
+      if (emailRef.current?.value && passwordRef.current?.value) {
+        await signin(emailRef.current?.value, passwordRef.current?.value);
+        router.push("/");
+      } else {
+        setError("Wrong Password!");
+      }
+    },
+    [router, signin]
+  );
 
   return (
     <>
