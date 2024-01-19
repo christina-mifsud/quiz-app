@@ -2,15 +2,27 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { quiz } from "@/app/(questions)/questions-data";
+import { fruitQuiz, vegQuiz } from "@/app/quizzes/questions-data";
+import QuizQuestions from "@/app/quizzes/[quizTopic]/page";
 
-const QuestionForm = () => {
+//////////////////////////////////
+interface QuestionForm {
+  questions: {
+    question: string;
+    choices: string[];
+    correctAnswer: string;
+  }[];
+}
+////////////////////////////////
+
+const QuestionForm = ({ questions }) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [selectedAnswerIndex, setSelectedAnswerIndex] = useState(null);
 
+  //////// HELP! //////////
   const router = useRouter();
-  const { questions } = quiz; // getting single question object from questions objects
+  const { questions } = QuizQuestions; // getting single question object from questions objects
   const { question, choices, correctAnswer } = questions[currentQuestion]; // destructuring single question object to access keys & values
 
   function handleClickNext() {
@@ -34,7 +46,6 @@ const QuestionForm = () => {
 
   return (
     <>
-      {/* <h3>Question</h3> */}
       <p>{question}</p>
       <ul>
         {choices.map((answer, index) => (
