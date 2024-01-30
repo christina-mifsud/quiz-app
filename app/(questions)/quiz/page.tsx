@@ -3,12 +3,12 @@ import { firestore } from "@/firebase/admin-config";
 import Link from "next/link";
 
 export async function getAllCategories() {
-  const collectionRef = await firestore.collection('quiz').get();
+  const collectionRef = await firestore.collection("quiz").get();
   const collectionData = collectionRef.docs.map((doc) => {
     return {
       id: doc.id,
     };
-  })
+  });
 
   return collectionData;
 }
@@ -18,13 +18,18 @@ export default async function QuestionPage() {
 
   return (
     <div className="quiz-container">
-        <h1>Fruit Quiz</h1>
+      <h1>Pick a Quiz</h1>
       <div className="quiz-cards">
-        {data.length && data.map((category) => (
-          <Link  href={`/quiz/${category.id}`} className="quiz-card" key="category.id">
-            <h3>{category?.id}</h3>
-          </Link>
-        ))}
+        {data.length &&
+          data.map((category) => (
+            <Link
+              href={`/quiz/${category.id}`}
+              className="quiz-card"
+              key="category.id"
+            >
+              <h3>{category?.id}</h3>
+            </Link>
+          ))}
       </div>
     </div>
   );
