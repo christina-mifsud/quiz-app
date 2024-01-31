@@ -26,7 +26,7 @@ export async function getAllCategories() {
 }
 
 // fetches catagories data obtained from prev function & renders something based on data
-export default async function QuestionPage() {
+export default async function AllCategoriesPage() {
   const data = await getAllCategories();
 
   return (
@@ -36,6 +36,7 @@ export default async function QuestionPage() {
         {data.length &&
           data.map((category) => (
             <Link
+              legacyBehavior
               // dynamic routing
               href={`/quiz/${category.id}`}
               key={category.id}

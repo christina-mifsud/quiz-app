@@ -1,14 +1,16 @@
-import { useRouter } from "next/router";
+"use client";
+
+import { useSearchParams } from "next/navigation";
 import QuizCard from "@/components/quizCard";
 
 const QuizCategoryPage = () => {
-  const router = useRouter();
-  const { categoryId } = router.query;
+  const searchParams = useSearchParams();
+  const categoryId = searchParams.get("categoryId") || null;
 
   return (
     <div className="quiz-container">
       <h1>Quiz Category: {categoryId}</h1>
-      <QuizCard category={category} />
+      <QuizCard category={categoryId} />
     </div>
   );
 };
