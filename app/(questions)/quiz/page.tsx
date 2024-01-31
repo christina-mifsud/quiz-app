@@ -1,7 +1,6 @@
 import "@/styles/quiz.scss";
 import { firestore } from "@/firebase/admin-config";
 import Link from "next/link";
-import QuizCard from "@/components/quizCard";
 
 // firestore setup
 // - quiz (collection)
@@ -39,12 +38,11 @@ export default async function QuestionPage() {
             <Link
               // dynamic routing
               href={`/quiz/${category.id}`}
-              className="quiz-card"
               key={category.id}
             >
-              <Link href={""}>
-                <QuizCard category={category} />
-              </Link>
+              <a className="quiz-card">
+                <h3>{category?.id}</h3>
+              </a>
             </Link>
           ))}
       </div>
