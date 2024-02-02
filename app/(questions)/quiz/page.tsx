@@ -6,10 +6,9 @@ import Link from "next/link";
 // - quiz (collection)
 //   - fruit (document)
 //     - questions (collection)
-//       - question1 (document)
-//         - questionText: "What color is a banana?"
-//         - options: ["yellow", "blue", "red"]
-//         - correctAnswer: "yellow"
+//       - question (document) eg. "What color is a banana?"
+//         - options (field) eg. ["yellow", "blue", "red"]
+//         - correctAnswer (field) eg. "yellow"
 
 // fetch all quiz categories from quiz collection (eg. fruit etc.) & map over them
 export async function getAllCategories() {
