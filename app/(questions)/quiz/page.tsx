@@ -13,7 +13,7 @@ export async function getAllCategories() {
   return collectionData;
 }
 
-export default async function QuestionPage() {
+export default async function CategoriesPage() {
   const data = await getAllCategories();
 
   return (
