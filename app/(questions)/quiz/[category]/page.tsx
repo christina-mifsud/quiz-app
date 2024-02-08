@@ -23,8 +23,6 @@ export default async function QuestionsPage({ params }: { params: IParams }) {
     const category = params.category;
     const data = await getAllQuestions(category);
 
-    console.log(data);
-
     return (
         <div className="quiz-container">
         <h1>Pick a Quiz</h1>
