@@ -1,47 +1,37 @@
 import { firestore } from "@/firebase/admin-config";
-import { useSearchParams } from "next/navigation";
 
-export async function fetchQuizData() {
-  const categoryId = useSearchParams();
+// fetch all quiz data from selected quiz collection (eg. fruit etc.) & map over them
+export async function fetchQuizData(categoryId) {
+  const quizRef = await firestore
+    .collection("quiz")
+    .doc(categoryId)
+    .collection("questions")
+    .get();
 
-  let quizData: {
-    id: string;
-    question: any;
-    options: any;
-    correctAnswer: any;
-  }[] = [];
-
-  try {
-    const quizRef = await firestore
-      .collection("quiz")
-      .doc(categoryId)
-      .collection("questions")
-      .get();
-    quizData = quizRef.docs.map((doc) => ({
+  const quizData = quizRef.docs.map((doc) => {
+    return {
       id: doc.id,
-      question: doc.data().question,
-      options: doc.data().options,
-      correctAnswer: doc.data().correctAnswer,
-    }));
-    console.log("FETCHED quizData:", quizData);
-  } catch (error) {
-    console.error("Error fetching!!", error);
-  }
+      ...doc.data(),
+    };
+  });
+  // console.log("FETCHED quizData:", quizData);
 
-  return {
-    categoryId,
-    quizData,
-  };
+  return quizData;
 }
 
-export default async function QuizPage({ categoryId, quizData }) {
-  // const data = await fetchQuizData();
+// page component to show quiz questions - TO SPLIT?
+export default async function QuizPage({ params }) {
+  const { categoryId } = params;
+
+  const fetchedQuizData = await fetchQuizData(categoryId);
+  console.log("fetchedQuizData:", fetchedQuizData);
+
   return (
     <div className="quiz-container">
       <h1>Quiz Category: {categoryId}</h1>
       <div className="quiz-questions">
-        {quizData.length &&
-          quizData.map((question) => (
+        {fetchedQuizData.length > 0 &&
+          fetchedQuizData.map((question) => (
             <div key={question.id}>
               <h3>{question.question}</h3>
               <ul>
