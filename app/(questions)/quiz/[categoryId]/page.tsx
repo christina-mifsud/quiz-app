@@ -41,7 +41,8 @@ export default async function QuizPage({ params }) {
               key={question.id}
             >
               <a className="quiz-card" key={question.id}>
-                <h3>{question?.question}</h3>
+                {/* <h3>{question?.question}</h3> */}
+                <h3>{question.id}</h3>
               </a>
             </Link>
           ))}
