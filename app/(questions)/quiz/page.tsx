@@ -4,22 +4,16 @@ import Link from "next/link";
 
 // firestore setup
 // - quiz (collection)
-//   - fruit (document)
+//   - desserts (document)
 //     - questions (collection)
-//       - question (document) eg. "What color is a banana?"
-//         - options (field) eg. ["yellow", "blue", "red"]
-//         - correctAnswer (field) eg. "yellow"
-//       - question (document) eg. "What color is a strawberry?"
-//         - options (field) eg. ["blue", "red", "yellow"]
-//         - correctAnswer (field) eg. "red"
-//   - vegetables (document)
-//     - questions (collection)
-//       - question (document) eg. "What color is broccoli?"
-//         - options (field) eg. ["green", "white", "purple"]
-//         - correctAnswer (field) eg. "green"
-//       - question (document) eg. "What color are carrots?"
-//         - options (field) eg. ["purple", "orange", "yellow"]
-//         - correctAnswer (field) eg. "orange"
+//       - question-one (document)
+//         - question (field) eg. "What is the main ingredient used to make brownies?"
+//         - answers (field) eg. ["chocolate", "butter", "milk"]
+//         - correctAns (field) eg. "chocolate"
+//       - question-two (document)
+//         - question (document) eg. "Which desert was named after a Russian ballerina?"
+//         - answers (field) eg. ["pavlova", "tiramisu", "madeleine"]
+//         - correctAns (field) eg. "madeleine"
 
 // fetch all quiz categories from quiz collection (eg. fruit etc.) & map over them
 export async function getAllCategories() {

@@ -35,8 +35,8 @@ export default async function QuizPage({ params }) {
             <div key={question.id}>
               <h3>{question.question}</h3>
               <ul>
-                {question.options.map((option, index) => (
-                  <li key={index}>{option}</li>
+                {question.answers.map((answer, index) => (
+                  <li key={index}>{answer}</li>
                 ))}
               </ul>
             </div>
