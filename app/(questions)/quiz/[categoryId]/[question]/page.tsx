@@ -9,16 +9,10 @@ export async function fetchAnswerData(categoryId, questionId) {
     .collection("quiz")
     .doc(categoryId)
     .collection("questions")
-    .doc(questionId) // HELP!!! I am getting this error:
+    .doc("question-one") // HELP!!! When using 'questionId', I am getting this error:
     // Unhandled Runtime Error: Value for argument "documentPath" is not a valid resource path. Path must be a non-empty string.
     .get();
 
-  //   const answersData = answersRef.docs.map((doc) => {
-  //     return {
-  //       id: doc.id,
-  //       ...doc.data(),
-  //     };
-  //   });
   const answersData = answersRef.data();
   console.log("FETCHED answersData:", answersData);
 
@@ -32,27 +26,20 @@ export default async function QuestionPage({ params }) {
   console.log("questionId:", questionId);
 
   const fetchedAnswerData = await fetchAnswerData(categoryId, questionId);
-  console.log("fetchedAnswerData:", fetchedAnswerData);
+  // console.log("fetchedAnswerData:", fetchedAnswerData);
+
   return (
     <div className="quiz-container">
       <h1>Quiz Category: {categoryId}</h1>
       <div className="quiz-cards">
         {fetchedAnswerData.answers.length > 0 &&
           fetchedAnswerData.answers.map((answer) => (
-            <Link
-              legacyBehavior
-              href={`/quiz/${categoryId}/${question.id}/${answers.id}`}
-              key={answers.id}
-            >
-              <a className="quiz-card" key={answers.id}>
-                <h3>{answer}</h3>
-                {/* <ul>
-                  {question.answers.map((answer, index) => (
-                    <li key={index}>{answer}</li>
-                  ))}
-                </ul> */}
-              </a>
-            </Link>
+            <a className="quiz-card" key={answer.id}>
+              {/* <h3>{answer}</h3> */}
+              <ul>
+                <li>{answer}</li>
+              </ul>
+            </a>
           ))}
       </div>
     </div>
