@@ -10,11 +10,11 @@ export async function fetchDocumentFromFirestore(queryString: string, documentId
   }
 
 
-//   export async function fetchCollectionFromFirestore(queryString: string) {
-//     const collectionRef = firestore
-//       .collection(queryString)
+  export async function fetchCollectionFromFirestore(queryString: string) {
+    const collectionRef = firestore
+      .collection(queryString)
   
-//     const collectionDocs = (await collectionRef.get()).docs.map(doc => doc.data());
+    const collectionDocs = (await collectionRef.get()).docs.map(doc => doc.data());
   
-//     return collectionDocs;
-//   }
+    return collectionDocs;
+  }
