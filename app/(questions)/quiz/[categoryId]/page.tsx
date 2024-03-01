@@ -12,7 +12,7 @@ export type QuizPageProps = {
 export default async function QuizPage({ params }: QuizPageProps) {
   const { categoryId } = params;
 
-  const fetchedQuizData = await fetchCollectionFromFirestore(`quiz/${categoryId}`);
+  const fetchedQuizData = await fetchCollectionFromFirestore(`quiz/${categoryId}/questions`);
 
   return (
     <div className="quiz-container">
