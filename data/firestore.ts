@@ -18,3 +18,9 @@ export async function fetchDocumentFromFirestore(queryString: string, documentId
   
     return collectionDocs;
   }
+
+  // static page. contact.html
+
+  // isr -> static page -> revalidate path evey 100 seconds
+
+  // server side rendering -> /games.html

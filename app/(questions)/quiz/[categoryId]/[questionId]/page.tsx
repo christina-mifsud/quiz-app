@@ -1,5 +1,8 @@
+const revalidate = 1000;
+
 import "@/styles/quiz.scss";
 import { fetchDocumentFromFirestore } from "@/data/firestore";
+import { db } from '@/firebase/config';
 
 
 export type QuestionPageProps = {
@@ -9,13 +12,28 @@ export type QuestionPageProps = {
   };
 };
 
+export async function generateStaticPaths() {
+  const questions = await db?.collectionGroup('questions').get();
+
+  const paths = questions.docs.map((question: any) => ({
+    params: {
+      categoryId: question.id,
+      questionId: question.id,
+    },
+  }));
+
+  return {
+    paths,
+    revalidate,
+  };
+}
 
 export default async function QuestionPage({ params }: QuestionPageProps) {
   const { categoryId, questionId } = params;
 
   const fetchedAnswerData = await fetchDocumentFromFirestore(`quiz/${categoryId}/questions`, questionId);
-  // {}
 
+  if (!fetchedAnswerData) return 404;
   return (
     <div className="quiz-container">
       <h1>Quiz Category: {categoryId}</h1>

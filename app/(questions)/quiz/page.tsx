@@ -6,14 +6,16 @@ import Link from "next/link";
 // - quiz (collection)
 //   - desserts (document)
 //     - questions (collection)
-//       - question-one (document)
+//       - question-one (document) -> ISR
 //         - question (field) eg. "What is the main ingredient used to make brownies?"
 //         - answers (field) eg. ["chocolate", "butter", "milk"]
 //         - correctAns (field) eg. "chocolate"
-//       - question-two (document)
+//       - question-two (document) -> ISR
 //         - question (document) eg. "Which desert was named after a Russian ballerina?"
 //         - answers (field) eg. ["pavlova", "tiramisu", "madeleine"]
 //         - correctAns (field) eg. "madeleine"
+// [/quiz/desserts/question-one, /quiz/desserts/question-two, ...]
+
 
 // fetch all quiz categories from quiz collection (eg. fruit etc.) & map over them
 export async function getAllCategories() {
