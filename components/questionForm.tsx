@@ -1,17 +1,39 @@
-"use client";
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { quiz } from "@/app/(questions)/questions-data";
+import { firestore } from "@/firebase/admin-config";
+
+///// replace with useEffect to get info from db
+// import { quiz } from "@/app/(questions)/questions-data";
 
 const QuestionForm = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [selectedAnswerIndex, setSelectedAnswerIndex] = useState(null);
+  const [questions, setQuestions] = useState([]);
 
   const router = useRouter();
-  const { questions } = quiz; // getting single question object from questions objects
-  const { question, choices, correctAnswer } = questions[currentQuestion]; // destructuring single question object to access keys & values
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const category = router.query.categoryId;
+        const questionsRef = await firestore
+          .collection("quiz")
+          .doc(category)
+          .collection("questions")
+          .get();
+
+        const questionsData = questionsRef.docs.map((doc) => doc.data());
+        setQuestions(questionsData);
+      } catch (error) {
+        console.log("ERROR!! fetching from Firestore:", error);
+      }
+    };
+    fetchData();
+  }, [router.query.categoryId]);
+
+  // const { questions } = quiz; // getting single question object from questions objects
+  const { question, options, correctAns } = questions[currentQuestion]; // destructuring single question object to access keys & values
 
   function handleClickNext() {
     // reset to null so as not to affect next question
@@ -23,7 +45,7 @@ const QuestionForm = () => {
   function handleSelectedAnswer(answer: string, index: number) {
     setSelectedAnswerIndex(index);
 
-    if (answer === correctAnswer) {
+    if (answer === correctAns) {
       setSelectedAnswer(true);
       console.log("CORRECT ANS!!");
     } else {
@@ -34,10 +56,9 @@ const QuestionForm = () => {
 
   return (
     <>
-      {/* <h3>Question</h3> */}
       <p>{question}</p>
       <ul>
-        {choices.map((answer, index) => (
+        {options.map((answer, index) => (
           <div
             onClick={() => handleSelectedAnswer(answer, index)}
             key={answer}
