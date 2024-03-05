@@ -9,9 +9,10 @@ export async function fetchDocumentFromFirestore(
   return answerDoc;
 }
 
-//   export async function fetchCollectionFromFirestore(queryString: string) {
-//     const collectionRef = firestore
-//       .collection(queryString)
-//     const collectionDocs = (await collectionRef.get()).docs.map(doc => doc.data());
-//     return collectionDocs;
-//   }
+export async function fetchCollectionFromFirestore(queryString: string) {
+  const collectionRef = firestore.collection(queryString);
+  const collectionDocs = (await collectionRef.get()).docs.map((doc) =>
+    doc.data()
+  );
+  return collectionDocs;
+}
