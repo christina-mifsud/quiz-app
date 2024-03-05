@@ -1,37 +1,39 @@
 import "@/styles/quiz.scss";
-import { firestore } from "@/firebase/admin-config";
+import { fetchDocumentFromFirestore } from "@/data/firestore";
 
-// fetch all answers from selected question (eg. Which French dessert's name means "Perfect"? etc.) & map over them
-export async function fetchAnswerData(categoryId, questionId) {
-  const answersRef = await firestore
-    .collection("quiz")
-    .doc(categoryId)
-    .collection("questions")
-    .doc(questionId)
-    .get();
+export type QuestionPageProps = {
+  params: {
+    categoryId: string;
+    questionId: string;
+  };
+};
 
-  const answersData = answersRef.data();
-  console.log("FETCHED answersData:", answersData);
-
-  return answersData;
-}
-
-export default async function QuestionPage({ params, answersData }) {
+export default async function QuestionPage({ params }: QuestionPageProps) {
   const { categoryId, questionId } = params;
 
   // console.log("categoryId:", categoryId);
   // console.log("questionId:", questionId);
 
-  const fetchedAnswerData = await fetchAnswerData(categoryId, questionId);
+  ////////// const fetchedAnswerData = await fetchAnswerData(categoryId, questionId);
+
+  const fetchedAnswerData = await fetchDocumentFromFirestore(
+    `quiz/${categoryId}/questions`,
+    questionId
+  );
 
   return (
     <div className="quiz-container">
       <h1>Question: {questionId}</h1>
       <div className="quiz-card">
-        <h3>{answersData.question}</h3>
-        <ul>
-          <li>{answersData.answer}</li>
-        </ul>
+        <h3>{fetchedAnswerData?.question}</h3>
+        <div>
+          {fetchedAnswerData?.answers.length > 0 &&
+            fetchedAnswerData?.answers.map((answer: any) => (
+              <ul key={answer.id}>
+                <li>{answer}</li>
+              </ul>
+            ))}
+        </div>
       </div>
     </div>
   );
