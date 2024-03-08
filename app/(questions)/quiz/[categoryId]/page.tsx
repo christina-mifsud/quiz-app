@@ -1,18 +1,13 @@
 import "@/styles/quiz.scss";
 import { firestore } from "@/firebase/admin-config";
 import Link from "next/link";
-// import { fetchCollectionFromFirestore } from "@/data/firestore";
+import { fetchCollectionFromFirestore } from "@/data/firestore";
 
-/////////////////////////////////////////////////////////
-///// HELP! When I use the below code to fetch collection I keep getting empty question cards and an 'undefined' at the end of the URL when iu click on it.
-////// The code seems to work with just the fetchDocumentFromFirestore component.
-/////////////////////////////////////////////////////////
-
-// export type QuizPageProps = {
-//   params: {
-//     categoryId: string;
-//   };
-// };
+export type QuizPageProps = {
+  params: {
+    categoryId: string;
+  };
+};
 
 // export default async function QuizPage({ params }: QuizPageProps) {
 //   const { categoryId } = params;
@@ -22,30 +17,30 @@ import Link from "next/link";
 //   );
 
 // fetch all questions from selected quiz collection (eg. fruit etc.) & map over them
-export async function fetchQuizData(categoryId) {
-  const quizRef = await firestore
-    .collection("quiz")
-    .doc(categoryId)
-    .collection("questions")
-    .get();
+// export async function fetchQuizData(categoryId: string) {
+  // const quizRef = await firestore
+  //   .collection("quiz")
+  //   .doc(categoryId)
+  //   .collection("questions")
+  //   .get();
 
-  const quizData = quizRef.docs.map((doc) => {
-    return {
-      id: doc.id,
-      ...doc.data(),
-    };
-  });
-  // console.log("FETCHED quizData:", quizData);
-
-  return quizData;
-}
+  // const quizData = quizRef.docs.map((doc) => {
+  //   return {
+  //     id: doc.id,
+  //     ...doc.data(),
+  //   };
+  // });
+  // console.log("FETCHED quizData:", quizData);}
 
 // page component to show quiz questions
-export default async function QuizPage({ params }) {
+export default async function QuizPage({ params }: QuizPageProps) {
   const { categoryId } = params;
 
-  const fetchedQuizData = await fetchQuizData(categoryId);
-  console.log("fetchedQuizData:", fetchedQuizData);
+
+  const fetchedQuizData = await fetchCollectionFromFirestore(
+    `quiz/${categoryId}/questions`);
+
+    console.log("fetchedQuizData:", fetchedQuizData);
 
   return (
     <div className="quiz-container">

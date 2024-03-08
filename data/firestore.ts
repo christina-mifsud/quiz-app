@@ -11,8 +11,9 @@ export async function fetchDocumentFromFirestore(
 
 export async function fetchCollectionFromFirestore(queryString: string) {
   const collectionRef = firestore.collection(queryString);
-  const collectionDocs = (await collectionRef.get()).docs.map((doc) =>
-    doc.data()
-  );
+  const collectionDocs = (await collectionRef.get()).docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
   return collectionDocs;
 }

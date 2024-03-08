@@ -11,10 +11,6 @@ export type QuestionPageProps = {
 export default async function QuestionPage({ params }: QuestionPageProps) {
   const { categoryId, questionId } = params;
 
-  // console.log("categoryId:", categoryId);
-  // console.log("questionId:", questionId);
-
-  ////////// const fetchedAnswerData = await fetchAnswerData(categoryId, questionId);
 
   const fetchedAnswerData = await fetchDocumentFromFirestore(
     `quiz/${categoryId}/questions`,
