@@ -17,6 +17,7 @@ export async function generateStaticPaths() {
   // get questions collection from firestore & make path for each
   const questions = await firestore?.collectionGroup("questions").get();
 
+
   const paths = questions.docs.map((question: any) => ({
     params: {
       categoryId: question.id,
@@ -39,6 +40,7 @@ export async function getStaticProps({
   const { categoryId, questionId } = params;
 
   // get answers documents from firestore
+
   const fetchedAnswerData = await fetchDocumentFromFirestore(
     `quiz/${categoryId}/questions`,
     questionId
@@ -66,6 +68,7 @@ export default function QuestionPage({
   questionId: string;
   fetchedAnswerData: any;
 }) {
+
   return (
     <div className="quiz-container">
       <h1>Question: {questionId}</h1>
@@ -78,6 +81,7 @@ export default function QuestionPage({
               <button key={answer.id} className="btn">
                 {answer}
               </button>
+
             ))}
         </div>
       </div>
