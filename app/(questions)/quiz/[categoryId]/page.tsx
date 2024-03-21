@@ -18,6 +18,7 @@ export type QuizPageProps = {
 
 // fetch all questions from selected quiz collection (eg. fruit etc.) & map over them
 // export async function fetchQuizData(categoryId: string) {
+
   // const quizRef = await firestore
   //   .collection("quiz")
   //   .doc(categoryId)
@@ -36,11 +37,12 @@ export type QuizPageProps = {
 export default async function QuizPage({ params }: QuizPageProps) {
   const { categoryId } = params;
 
-
   const fetchedQuizData = await fetchCollectionFromFirestore(
-    `quiz/${categoryId}/questions`);
+    `quiz/${categoryId}/questions`
+  );
 
-    console.log("fetchedQuizData:", fetchedQuizData);
+  console.log("fetchedQuizData:", fetchedQuizData);
+
 
   return (
     <div className="quiz-container">
@@ -54,7 +56,8 @@ export default async function QuizPage({ params }: QuizPageProps) {
               key={question.id}
             >
               <a className="quiz-card" key={question.id}>
-                {/* <h3>{question?.question}</h3> */}
+                {/* I am question-one etc. card */}
+
                 <h3>{question.id}</h3>
               </a>
             </Link>
