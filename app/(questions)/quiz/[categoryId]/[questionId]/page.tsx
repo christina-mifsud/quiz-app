@@ -3,7 +3,7 @@
 import "@/styles/quiz.scss";
 import { fetchDocumentFromFirestore } from "@/data/firestore";
 import { firestore } from "@/firebase/admin-config";
-import QuestionForm from "@/components/questionForm";
+import QuizForm from "./_components/QuizForm";
 
 export type QuestionPageProps = {
   params: {
@@ -57,7 +57,14 @@ export default async function QuestionPage({ params }: QuestionPageProps) {
       {/* I am single question card with buttons for answers */}
       <h1>Question: {questionId}</h1>
       <div className="question-card">
-        {question && <QuestionForm questions={[question]} />}
+        <h3>{fetchedAnswerData?.question}</h3>
+        <div className="answers">
+          {/* {fetchedAnswerData?.answers.length > 0 &&
+            fetchedAnswerData?.answers.map((answer: any) => (
+              <button key={answer.id} className="btn">{answer}</button>
+            ))} */}
+            <QuizForm data={fetchedAnswerData} questionId={`/${categoryId}/${questionId}`}/>
+        </div>
       </div>
     </div>
   );

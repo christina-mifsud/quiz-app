@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { auth } from "@/firebase/config";
+import { auth, db} from "@/firebase/config";
 import { useAuth } from "./useAuth";
 
 ///////// HELP!! do these go here or in a separate file with types?

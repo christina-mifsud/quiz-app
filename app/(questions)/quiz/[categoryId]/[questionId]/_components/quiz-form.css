@@ -1,0 +1,20 @@
+.question-form{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1rem;
+}
+
+.question-formLabel {
+    padding: 1rem;
+    outline: 3px solid red;
+    min-width: 200px;
+    display: flex;
+    gap: 1rem;
+}
+
+/* .form-button:disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+} */
