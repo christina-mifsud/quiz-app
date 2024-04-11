@@ -15,11 +15,11 @@ const QuestionForm = ({ questions }) => {
   });
 
   // const { questions } = quiz; // getting single question object from questions objects
-  const { question, choices, correctAnswer } = questions[activeQuestion]; // destructuring single question object to access keys & values
+  const { question, choices, correctAns } = questions[0]; // destructuring single question object to access keys & values
 
   const onClickNext = () => {
     setResult((prev) =>
-      selectedAnswer === correctAnswer
+      selectedAnswer === correctAns
         ? {
             ...prev,
             score: prev.score + 5,
@@ -42,7 +42,7 @@ const QuestionForm = ({ questions }) => {
   };
 
   return (
-    <div className="quiz-container">
+    <>
       {!showResult ? (
         <div>
           <h2>{question}</h2>
@@ -81,7 +81,7 @@ const QuestionForm = ({ questions }) => {
           </p>
         </div>
       )}
-    </div>
+    </>
   );
 };
 
