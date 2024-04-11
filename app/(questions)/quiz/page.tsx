@@ -34,7 +34,7 @@ export default async function AllCategoriesPage() {
   const data = await getAllCategories();
 
   return (
-    <div className="quiz-container">
+    <div className="quizzes-container">
       <h1>Pick a Quiz</h1>
       <div className="quiz-cards">
         {data.length &&
