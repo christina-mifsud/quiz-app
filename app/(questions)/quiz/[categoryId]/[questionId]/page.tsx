@@ -1,9 +1,8 @@
-// export const revalidate = 120; // https://react.dev/reference/react/cache#noun-labs-1201738-(2)
-
 import "@/styles/quiz.scss";
 import { fetchDocumentFromFirestore } from "@/data/firestore";
 import { firestore } from "@/firebase/admin-config";
-import QuestionForm from "@/components/questionForm";
+import QuizContainer from "@/components/quizContainer";
+// import ResultsComponent from "@/components/ResultsComponent";
 
 export type QuestionPageProps = {
   params: {
@@ -44,22 +43,24 @@ export default async function QuestionPage({ params }: QuestionPageProps) {
   const { categoryId, questionId } = params;
   const fetchedAnswerData = await fetchQuestionData(categoryId, questionId);
 
-  console.log("Single Question (FetchedAnswerDataaaaa):", fetchedAnswerData);
+  // console.log("Single Question (FetchedAnswerDataaaaa):", fetchedAnswerData);
 
   const question = {
     question: fetchedAnswerData?.question,
-    choices: fetchedAnswerData?.answers,
+    answers: fetchedAnswerData?.answers,
     correctAns: fetchedAnswerData?.correctAns,
   };
 
+  console.log("ANSANSwers: ", question.answers);
+
   return (
-    <div className="quiz-container">
-      {/* I am single question card with buttons for answers */}
-      <h1>Question: {questionId}</h1>
-      <div className="question-card">
-        {question && <QuestionForm questions={[question]} />}
+    <>
+      <div className="quizzes-container">
+        <h1>Question: {questionId}</h1>
+        {/* I am a single question card */}
+        {question && <QuizContainer question={[question]} />}
       </div>
-    </div>
+    </>
   );
 }
 
