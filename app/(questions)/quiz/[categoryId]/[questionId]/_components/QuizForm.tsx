@@ -7,6 +7,7 @@ import { useForm, SubmitHandler } from "react-hook-form"
 import './quiz-form.css';
 import { db, increment } from "@/firebase/config";
 import { useAuth } from "@/hooks/useAuth";
+import { get } from "http";
 
 type Inputs = {
     answerInput: string
@@ -17,11 +18,12 @@ export default function QuizForm({
     questionId
 }: any) {
     // STATE
-
-    console.log(data);
     const { currentUser } = useAuth();
     const [countDown, setCountDown] = useState(10);
-    const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
+    const { register, handleSubmit, formState: { errors }, getValues } = useForm<Inputs>();
+
+
+    console.log(getValues("answerInput"));
     
 
     // EVENTS
@@ -34,7 +36,7 @@ export default function QuizForm({
                     [questionId]: true
                 }, {
                     merge: true
-                })
+                })                
 
                 await db.collection('users').doc('WhEdXBpNsITHbP1qFx6V').set({
                     experiencePoints: increment(5)
@@ -49,18 +51,23 @@ export default function QuizForm({
 
     // useEffect
     useEffect(() => {
-        if (!countDown) return;
+        if (!countDown) {
+            onSubmit({ answerInput: getValues("answerInput") });
+            return;
+        };
 
         const timer = setInterval(() => {
             setCountDown(countDown - 1); 
         }, 1000);
 
+        onSubmit({ answerInput: getValues("answerInput") });
+
         return () => clearInterval(timer);
 
-    }, [countDown]);
+    }, [countDown, getValues, onSubmit]);
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="question-form">
+        <>
             <p>{countDown} seconds</p>
             {data?.answers.length > 0 && data?.answers.map((answer: any) => (
                 <label key={answer.id} className="question-formLabel">
@@ -72,12 +79,6 @@ export default function QuizForm({
                     {errors && <p>{errors["answerInput"]?.message}</p>}
                 </label>                    
             ))}
-
-            <button 
-                type="submit"
-            >
-                Check answer
-            </button>
-        </form>
+        </>
     );
 }
