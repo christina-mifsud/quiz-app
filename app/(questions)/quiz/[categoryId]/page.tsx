@@ -2,6 +2,7 @@ import "@/styles/quiz.scss";
 import { firestore } from "@/firebase/admin-config";
 import Link from "next/link";
 import { fetchCollectionFromFirestore } from "@/data/firestore";
+import { fetchUserExperiencePoints } from "@/data/firestore";
 import ResultsComponent from "@/components/ResultsComponent";
 
 export type QuizPageProps = {
@@ -20,13 +21,17 @@ export default async function QuizPage({ params }: QuizPageProps) {
 
   // console.log("fetchedQuizData:", fetchedQuizData);
 
-  console.log("REEEEESults: ", results);
+  const userId = "WhEdXBpNsITHbP1qFx6V";
+  const results = await fetchUserExperiencePoints(userId);
+
+  console.log("EXPERiencePoints: ", results);
 
   return (
     <>
       <div className="quizzes-container">
         <h1>Quiz Category: {categoryId}</h1>
         <div className="quiz-cards">
+          {/* QuizContainer */}
           {fetchedQuizData?.length > 0 &&
             fetchedQuizData?.map((question) => (
               <Link
@@ -43,6 +48,7 @@ export default async function QuizPage({ params }: QuizPageProps) {
         </div>
       </div>
       <div className="results-container">
+        {/* ResultsComponent */}
         {results && <ResultsComponent results={results} />}
       </div>
     </>

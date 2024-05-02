@@ -17,6 +17,7 @@ if (!firebase.apps.length) {
 }
 
 const db = firebase.firestore();
+const increment = firebase.firestore.FieldValue.increment;
 
 export const auth = firebase.auth();
-export { firebase, db };
+export { firebase, db, increment };

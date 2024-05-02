@@ -3,9 +3,9 @@
 import { useState } from "react";
 import QuestionForm from "./questionForm";
 
-const QuizContainer = ({ question }) => {
+const QuestionCard = ({ question, answers, correctAns }) => {
   const [results, setResults] = useState({
-    totalQuestions: question.length,
+    totalQuestions: 3, // TODO - change to dynamic
     totalScore: 0,
     totalCorrectAnswers: 0,
     totalWrongAnswers: 0,
@@ -25,20 +25,14 @@ const QuizContainer = ({ question }) => {
   };
 
   return (
-    <div>
-      {question.map((question, index) => (
-        <QuestionForm
-          key={index}
-          question={question.question}
-          answers={question.answers}
-          correctAns={question.correctAns}
-          updateResults={updateResults}
-        />
-      ))}
+    <div className="question-card">
+      <QuestionForm
+        question={question}
+        answers={answers}
+        correctAns={correctAns}
+        updateResults={updateResults}
+      />
     </div>
   );
 };
-
-export default QuizContainer;
-export { results };
-///////////// HELP!! ////////// Keep getting error: Module parse failed: Export 'results' is not defined but I am defining it as the initial state
+export default QuestionCard;

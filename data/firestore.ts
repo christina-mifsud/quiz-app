@@ -9,6 +9,11 @@ export async function fetchDocumentFromFirestore(
   return answerDoc;
 }
 
+export async function fetchUserExperiencePoints(userId) {
+  const userDocument = await fetchDocumentFromFirestore("users", userId);
+  return userDocument.experiencePoints;
+}
+
 export async function fetchCollectionFromFirestore(queryString: string) {
   const collectionRef = firestore.collection(queryString);
   const collectionDocs = (await collectionRef.get()).docs.map((doc) => ({

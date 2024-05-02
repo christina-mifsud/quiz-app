@@ -1,7 +1,7 @@
 import "@/styles/quiz.scss";
 import { fetchDocumentFromFirestore } from "@/data/firestore";
 import { firestore } from "@/firebase/admin-config";
-import QuizContainer from "@/components/quizContainer";
+import QuestionCard from "@/components/questionCard";
 // import ResultsComponent from "@/components/ResultsComponent";
 
 export type QuestionPageProps = {
@@ -45,20 +45,21 @@ export default async function QuestionPage({ params }: QuestionPageProps) {
 
   // console.log("Single Question (FetchedAnswerDataaaaa):", fetchedAnswerData);
 
-  const question = {
-    question: fetchedAnswerData?.question,
-    answers: fetchedAnswerData?.answers,
-    correctAns: fetchedAnswerData?.correctAns,
-  };
-
-  console.log("ANSANSwers: ", question.answers);
+  // console.log("ANSANSwers: ", question.answers);
 
   return (
     <>
-      <div className="quizzes-container">
+      <div className="questions-container">
         <h1>Question: {questionId}</h1>
         {/* I am a single question card */}
-        {question && <QuizContainer question={[question]} />}
+        <div className="question-card">
+          <QuestionCard
+            question={fetchedAnswerData?.question}
+            answers={fetchedAnswerData?.answers}
+            correctAns={fetchedAnswerData?.correctAns}
+            // questionId={`/${categoryId}/${questionId}`}
+          />
+        </div>
       </div>
     </>
   );
