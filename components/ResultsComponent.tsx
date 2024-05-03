@@ -13,8 +13,6 @@ const ResultsComponent = ({ results }) => {
     <div>
       <h3>Overall Result</h3>
       <p>Total Questions: {results.totalQuestions}</p>
-      <p>Correct Answers: {results.totalCorrectAnswers}</p>
-      <p>Wrong Answers: {results.totalWrongAnswers}</p>
     </div>
   );
 };
