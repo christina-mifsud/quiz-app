@@ -1,81 +1,97 @@
+// as QuestionsAndResultsPage is server-side and we'd like to keep it that way, we are fetching the data from Firestore as normal during server-side rendering & passing said data as props to this client-side component to handle the results logic etc.
+"use client";
+
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { firestore } from "@/firebase/admin-config";
+import { db, increment } from "@/firebase/config";
 
-///// replace with useEffect to get info from db
-// import { quiz } from "@/app/(questions)/questions-data";
-
-const QuestionForm = () => {
-  const [currentQuestion, setCurrentQuestion] = useState(0);
+const QuestionForm = ({
+  question,
+  answers,
+  correctAns,
+  questionId,
+  currentUser,
+}) => {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
-  const [selectedAnswerIndex, setSelectedAnswerIndex] = useState(null);
-  const [questions, setQuestions] = useState([]);
+  const [countDown, setCountDown] = useState(5);
 
-  const router = useRouter();
+  const onAnswerSelected = (answer) => {
+    console.log("Answer selected:", answer);
+    setSelectedAnswer(answer);
+  };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const category = router.query.categoryId;
-        const questionsRef = await firestore
-          .collection("quiz")
-          .doc(category)
-          .collection("questions")
-          .get();
+  const onClickNext = async () => {
+    // onSubmit({ answerInput: getValues("answerInput") }) // TODO! Implement this to save answers to Firestore.
 
-        const questionsData = questionsRef.docs.map((doc) => doc.data());
-        setQuestions(questionsData);
-      } catch (error) {
-        console.log("ERROR!! fetching from Firestore:", error);
-      }
-    };
-    fetchData();
-  }, [router.query.categoryId]);
+    const isCorrect = selectedAnswer === correctAns;
+    if (countDown > 0 && isCorrect) {
+      console.log("hurray we got the correct answer");
 
-  // const { questions } = quiz; // getting single question object from questions objects
-  const { question, options, correctAns } = questions[currentQuestion]; // destructuring single question object to access keys & values
+      // console.log("CHOOOOOOOICES: ", answers);
 
-  function handleClickNext() {
-    // reset to null so as not to affect next question
-    setSelectedAnswer(null);
-    setSelectedAnswerIndex(null);
-    setCurrentQuestion((prevQuestion) => prevQuestion + 1);
-  }
+      // saves which questions were answered and whether correct or not
+      await db
+        .collection("progress")
+        .doc("WhEdXBpNsITHbP1qFx6V")
+        .set(
+          {
+            [questionId]: true,
+          },
+          { merge: true }
+        );
 
-  function handleSelectedAnswer(answer: string, index: number) {
-    setSelectedAnswerIndex(index);
-
-    if (answer === correctAns) {
-      setSelectedAnswer(true);
-      console.log("CORRECT ANS!!");
-    } else {
-      setSelectedAnswer(false);
-      console.log("WRONGGGG!!");
+      // give experience points
+      await db
+        .collection("users")
+        .doc("WhEdXBpNsITHbP1qFx6V")
+        .set(
+          {
+            experiencePoints: increment(1),
+          },
+          { merge: true }
+        );
+    } else if (countDown > 0) {
+      console.log("NOPE");
     }
-  }
+  };
+
+  // panic timer
+  useEffect(() => {
+    if (countDown <= 0) return;
+
+    const timer = setTimeout(() => {
+      setCountDown(countDown - 1);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [countDown]);
+
+  // console.log(answers);
 
   return (
     <>
-      <p>{question}</p>
+      <h2>{question}</h2>
+      <p>{countDown} seconds remaining</p>
       <ul>
-        {options.map((answer, index) => (
-          <div
-            onClick={() => handleSelectedAnswer(answer, index)}
+        {answers.map((answer) => (
+          <li
+            onClick={() => onAnswerSelected(answer)}
             key={answer}
-            className={selectedAnswerIndex === index ? "selected-answer" : null}
+            className={selectedAnswer === answer ? "selected-answer" : ""}
           >
-            <label>{answer}</label>
-            <input type="radio" name="" value="" />
-          </div>
+            {answer}
+          </li>
         ))}
       </ul>
-
-      {/* checking is currentQuestion the last question? if so, change button to finish &
-      set selectedAnswerIndex to null again when next/finish is clicked */}
-      <button onClick={handleClickNext} disabled={selectedAnswer === null}>
-        {currentQuestion === questions.length - 1 ? "Finish" : "Next"}
-      </button>
+      <div className="flex-right">
+        <button
+          onClick={onClickNext}
+          disabled={!selectedAnswer || countDown <= 0}
+        >
+          Next
+        </button>
+      </div>
     </>
   );
 };
+
 export default QuestionForm;

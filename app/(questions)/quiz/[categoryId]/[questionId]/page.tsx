@@ -1,9 +1,8 @@
-export const revalidate = 120;
-
 import "@/styles/quiz.scss";
 import { fetchDocumentFromFirestore } from "@/data/firestore";
-import { db } from "@/firebase/config";
 import { firestore } from "@/firebase/admin-config";
+import QuestionCard from "@/components/questionCard";
+// import ResultsComponent from "@/components/ResultsComponent";
 
 export type QuestionPageProps = {
   params: {
@@ -13,10 +12,9 @@ export type QuestionPageProps = {
 };
 
 // pre-rendered at build time
-export async function generateStaticPaths() {
+export async function getStaticPaths() {
   // get questions collection from firestore & make path for each
   const questions = await firestore?.collectionGroup("questions").get();
-
 
   const paths = questions.docs.map((question: any) => ({
     params: {
@@ -32,62 +30,40 @@ export async function generateStaticPaths() {
 }
 
 // fetches data (answers for specific question)
-export async function getStaticProps({
-  params,
-}: {
-  params: { categoryId: string; questionId: string };
-}) {
-  const { categoryId, questionId } = params;
-
+async function fetchQuestionData(categoryId: string, questionId: string) {
   // get answers documents from firestore
-
   const fetchedAnswerData = await fetchDocumentFromFirestore(
     `quiz/${categoryId}/questions`,
     questionId
   );
-
-  return {
-    props: {
-      categoryId,
-      questionId,
-      fetchedAnswerData,
-    },
-    revalidate: 120, // re-load in 2mins
-  };
+  return fetchedAnswerData;
 }
 
-// export default async function QuestionPage({ params }: QuestionPageProps) {
-// export default function QuestionPage({ fetchedAnswerData }: { fetchedAnswerData: any }) {
+export default async function QuestionPage({ params }: QuestionPageProps) {
+  const { categoryId, questionId } = params;
+  const fetchedAnswerData = await fetchQuestionData(categoryId, questionId);
 
-export default function QuestionPage({
-  categoryId,
-  questionId,
-  fetchedAnswerData,
-}: {
-  categoryId: string;
-  questionId: string;
-  fetchedAnswerData: any;
-}) {
+  // console.log("Single Question (FetchedAnswerDataaaaa):", fetchedAnswerData);
+
+  // console.log("ANSANSwers: ", question.answers);
 
   return (
-    <div className="quiz-container">
-      <h1>Question: {questionId}</h1>
-      <div className="question-card">
-        <h3>{fetchedAnswerData?.question}</h3>
-        <div className="answers">
-          {fetchedAnswerData?.answers.length > 0 &&
-            fetchedAnswerData?.answers.map((answer: any) => (
-              // I am single question card with buttons for answers
-              <button key={answer.id} className="btn">
-                {answer}
-              </button>
-
-            ))}
+    <>
+      <div className="questions-container">
+        <h1>Question: {questionId}</h1>
+        {/* I am a single question card */}
+        <div className="question-card">
+          <QuestionCard
+            question={fetchedAnswerData?.question}
+            answers={fetchedAnswerData?.answers}
+            correctAns={fetchedAnswerData?.correctAns}
+            // questionId={`/${categoryId}/${questionId}`}
+          />
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
-// NOTES: generateStaticPaths & getStaticProps - both are needed for ISR.
-// if a request is made to a page that hasn't been pre-rendered (because of fallback: true), fallback version of page will be displayed. In the meantime,  data will be fetched with getStaticProps. Once fetched, page will reload with new data to show updated version.
+// as QuestionPage is server-side and we'd like to keep it that way, we are fetching the data from Firestore as normal during server-side rendering & passing said data as props to the questionForm client-side component to handle the results logic etc.
+// (logic here kept breaking everything - so no thanks)

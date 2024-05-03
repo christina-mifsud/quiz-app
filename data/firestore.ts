@@ -9,6 +9,16 @@ export async function fetchDocumentFromFirestore(
   return answerDoc;
 }
 
+export async function fetchUserExperiencePoints(userId: string) {
+  const userDocument = await fetchDocumentFromFirestore("users", userId);
+  return userDocument.experiencePoints;
+}
+
+export async function fetchUserProgress(userId: string) {
+  const userDocument = await fetchDocumentFromFirestore("users", userId);
+  return userDocument.questionKey; // How do I target this key: '/desserts/question-one: true'
+}
+
 export async function fetchCollectionFromFirestore(queryString: string) {
   const collectionRef = firestore.collection(queryString);
   const collectionDocs = (await collectionRef.get()).docs.map((doc) => ({
