@@ -9,7 +9,7 @@ export async function fetchDocumentFromFirestore(
   return answerDoc;
 }
 
-export async function fetchUserExperiencePoints(userId) {
+export async function fetchUserExperiencePoints(userId: string) {
   const userDocument = await fetchDocumentFromFirestore("users", userId);
   return userDocument.experiencePoints;
 }

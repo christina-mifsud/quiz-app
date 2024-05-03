@@ -12,9 +12,10 @@ const QuestionForm = ({
   currentUser,
 }) => {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
-  const [countDown, setCountDown] = useState(10);
+  const [countDown, setCountDown] = useState(5);
 
   const onAnswerSelected = (answer) => {
+    console.log("Answer selected:", answer);
     setSelectedAnswer(answer);
   };
 
@@ -42,7 +43,7 @@ const QuestionForm = ({
         .doc("WhEdXBpNsITHbP1qFx6V")
         .set(
           {
-            experiencePoints: increment(5),
+            experiencePoints: increment(1),
           },
           { merge: true }
         );
@@ -62,7 +63,7 @@ const QuestionForm = ({
     return () => clearTimeout(timer);
   }, [countDown]);
 
-  console.log(answers);
+  // console.log(answers);
 
   return (
     <>

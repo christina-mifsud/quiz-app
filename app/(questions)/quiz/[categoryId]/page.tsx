@@ -1,8 +1,10 @@
 import "@/styles/quiz.scss";
 import { firestore } from "@/firebase/admin-config";
 import Link from "next/link";
-import { fetchCollectionFromFirestore } from "@/data/firestore";
-import { fetchUserExperiencePoints } from "@/data/firestore";
+import {
+  fetchUserExperiencePoints,
+  fetchCollectionFromFirestore,
+} from "@/data/firestore";
 import ResultsComponent from "@/components/ResultsComponent";
 
 export type QuizPageProps = {
@@ -47,9 +49,17 @@ export default async function QuizPage({ params }: QuizPageProps) {
             ))}
         </div>
       </div>
-      <div className="results-container">
+      <div>
         {/* ResultsComponent */}
-        {results && <ResultsComponent results={results} />}
+        {results && (
+          <ResultsComponent
+            results={{
+              totalQuestions: fetchedQuizData.length,
+              totalCorrectAnswers: results,
+              totalWrongAnswers: fetchedQuizData.length - results,
+            }}
+          />
+        )}
       </div>
     </>
   );
