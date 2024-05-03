@@ -20,6 +20,8 @@ const QuestionForm = ({
   };
 
   const onClickNext = async () => {
+    // onSubmit({ answerInput: getValues("answerInput") }) // TODO! Implement this to save answers to Firestore.
+
     const isCorrect = selectedAnswer === correctAns;
     if (countDown > 0 && isCorrect) {
       console.log("hurray we got the correct answer");

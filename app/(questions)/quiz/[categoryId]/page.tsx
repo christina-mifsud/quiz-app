@@ -4,6 +4,7 @@ import Link from "next/link";
 import {
   fetchUserExperiencePoints,
   fetchCollectionFromFirestore,
+  fetchUserProgress,
 } from "@/data/firestore";
 import ResultsComponent from "@/components/ResultsComponent";
 
@@ -25,8 +26,23 @@ export default async function QuizPage({ params }: QuizPageProps) {
 
   const userId = "WhEdXBpNsITHbP1qFx6V";
   const results = await fetchUserExperiencePoints(userId);
+  const userProgress = await fetchUserProgress(userId);
+
+  let correctAnswers = 0;
+  let wrongAnswers = 0;
+
+  if (userProgress) {
+    Object.values(userProgress).forEach(([key, value]) => {
+      if (value === true) {
+        correctAnswers += 1;
+      } else {
+        wrongAnswers += 1;
+      }
+    });
+  }
 
   console.log("EXPERiencePoints: ", results);
+  console.log("USERProgress: ", userProgress);
 
   return (
     <>
@@ -55,8 +71,8 @@ export default async function QuizPage({ params }: QuizPageProps) {
           <ResultsComponent
             results={{
               totalQuestions: fetchedQuizData.length,
-              totalCorrectAnswers: results,
-              totalWrongAnswers: fetchedQuizData.length - results,
+              totalCorrectAnswers: correctAnswers,
+              totalWrongAnswers: wrongAnswers,
             }}
           />
         )}
