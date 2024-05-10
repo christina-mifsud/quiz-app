@@ -5,8 +5,10 @@ import {
   fetchUserExperiencePoints,
   fetchCollectionFromFirestore,
   fetchUserProgress,
+  fetchDocumentFromFirestore,
 } from "@/data/firestore";
 import ResultsComponent from "@/components/ResultsComponent";
+import { ProgressCheck } from "./_components/progress-check";
 
 export type QuizPageProps = {
   params: {
@@ -25,24 +27,12 @@ export default async function QuizPage({ params }: QuizPageProps) {
   // console.log("fetchedQuizData:", fetchedQuizData);
 
   const userId = "WhEdXBpNsITHbP1qFx6V";
+  const userDoc = await fetchDocumentFromFirestore("users", userId);
+  const userProgressCollection = await fetchDocumentFromFirestore(
+    `progress`,
+    userId
+  );
   const results = await fetchUserExperiencePoints(userId);
-  const userProgress = await fetchUserProgress(userId);
-
-  let correctAnswers = 0;
-  let wrongAnswers = 0;
-
-  if (userProgress) {
-    Object.values(userProgress).forEach(([key, value]) => {
-      if (value === true) {
-        correctAnswers += 1;
-      } else {
-        wrongAnswers += 1;
-      }
-    });
-  }
-
-  console.log("EXPERiencePoints: ", results);
-  console.log("USERProgress: ", userProgress);
 
   return (
     <>
@@ -52,16 +42,13 @@ export default async function QuizPage({ params }: QuizPageProps) {
           {/* QuizContainer */}
           {fetchedQuizData?.length > 0 &&
             fetchedQuizData?.map((question) => (
-              <Link
-                legacyBehavior
-                href={`/quiz/${categoryId}/${question.id}`}
-                key={question.id}
-              >
-                <a className="quiz-card" key={question.id}>
-                  {/* I am question-one etc. card */}
-                  <h3>{question.id}</h3>
-                </a>
-              </Link>
+              <>
+                <ProgressCheck
+                  questionSlug={`/${categoryId}/${question.id}`}
+                  progressSlugs={userProgressCollection}
+                  id={question.id}
+                />
+              </>
             ))}
         </div>
       </div>
@@ -71,8 +58,6 @@ export default async function QuizPage({ params }: QuizPageProps) {
           <ResultsComponent
             results={{
               totalQuestions: fetchedQuizData.length,
-              totalCorrectAnswers: correctAnswers,
-              totalWrongAnswers: wrongAnswers,
             }}
           />
         )}

@@ -4,9 +4,9 @@ export async function fetchDocumentFromFirestore(
   queryString: string,
   documentId: string
 ) {
-  const answerRef = firestore.collection(queryString).doc(documentId);
-  const answerDoc = (await answerRef.get()).data();
-  return answerDoc;
+  const docRef = firestore.collection(queryString).doc(documentId);
+  const docData = (await docRef.get()).data();
+  return docData;
 }
 
 export async function fetchUserExperiencePoints(userId: string) {
@@ -15,7 +15,7 @@ export async function fetchUserExperiencePoints(userId: string) {
 }
 
 export async function fetchUserProgress(userId: string) {
-  const userDocument = await fetchDocumentFromFirestore("users", userId);
+  const userDocument = await fetchDocumentFromFirestore("progress", userId);
   return userDocument.questionKey; // How do I target this key: '/desserts/question-one: true'
 }
 
