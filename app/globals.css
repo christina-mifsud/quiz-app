@@ -13,3 +13,8 @@
   min-height: 100vh;
   justify-content: space-between;
 }
+
+button:disabled {
+  /* pointer-events: none; */
+  cursor: not-allowed;
+}
