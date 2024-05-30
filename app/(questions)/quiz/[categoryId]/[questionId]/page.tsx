@@ -54,7 +54,8 @@ export default async function QuestionPage({ params }: QuestionPageProps) {
             question={fetchedAnswerData?.question}
             answers={fetchedAnswerData?.answers}
             correctAns={fetchedAnswerData?.correctAns}
-            // questionId={`/${categoryId}/${questionId}`}
+            questionId={""}
+            currentUser={""}
           />
         </div>
       </div>

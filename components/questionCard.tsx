@@ -3,7 +3,21 @@
 import { useState } from "react";
 import QuestionForm from "./questionForm";
 
-const QuestionCard = ({ question, answers, correctAns }) => {
+type QuestionCardProps = {
+  question: string;
+  answers: string[];
+  correctAns: string;
+  questionId: string;
+  currentUser: string;
+};
+
+const QuestionCard: React.FC<QuestionCardProps> = ({
+  question,
+  answers,
+  correctAns,
+  questionId,
+  currentUser,
+}) => {
   const [results, setResults] = useState({
     totalQuestions: 3, // TODO - change to dynamic
     totalScore: 0,
@@ -11,18 +25,18 @@ const QuestionCard = ({ question, answers, correctAns }) => {
     totalWrongAnswers: 0,
   });
 
-  const updateResults = (isCorrect) => {
-    setResults((prevResults) => ({
-      ...prevResults,
-      totalScore: prevResults.totalScore + (isCorrect ? 5 : 0),
-      totalCorrectAnswers: isCorrect
-        ? prevResults.totalCorrectAnswers + 1
-        : prevResults.totalCorrectAnswers,
-      totalWrongAnswers: isCorrect
-        ? prevResults.totalWrongAnswers
-        : prevResults.totalWrongAnswers + 1,
-    }));
-  };
+  // const updateResults = (isCorrect: boolean) => {
+  //   setResults((prevResults) => ({
+  //     ...prevResults,
+  //     totalScore: prevResults.totalScore + (isCorrect ? 5 : 0),
+  //     totalCorrectAnswers: isCorrect
+  //       ? prevResults.totalCorrectAnswers + 1
+  //       : prevResults.totalCorrectAnswers,
+  //     totalWrongAnswers: isCorrect
+  //       ? prevResults.totalWrongAnswers
+  //       : prevResults.totalWrongAnswers + 1,
+  //   }));
+  // };
 
   return (
     <div className="question-card">
@@ -30,7 +44,9 @@ const QuestionCard = ({ question, answers, correctAns }) => {
         question={question}
         answers={answers}
         correctAns={correctAns}
-        updateResults={updateResults}
+        // updateResults={updateResults}
+        questionId={questionId}
+        currentUser={currentUser}
       />
     </div>
   );
