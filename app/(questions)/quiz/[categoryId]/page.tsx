@@ -26,13 +26,16 @@ export default async function QuizPage({ params }: QuizPageProps) {
 
   // console.log("fetchedQuizData:", fetchedQuizData);
 
-  const userId = "WhEdXBpNsITHbP1qFx6V";
+  const userId = "WhEdXBpNsITHbP1qFx6V"; // TO CHANGE!
   const userDoc = await fetchDocumentFromFirestore("users", userId);
   const userProgressCollection = await fetchDocumentFromFirestore(
     `progress`,
     userId
   );
   const results = await fetchUserExperiencePoints(userId);
+
+  const correctAnswers = 10; // TO CHANGE!
+  const wrongAnswers = 2; // TO CHANGE!
 
   return (
     <>
@@ -58,6 +61,8 @@ export default async function QuizPage({ params }: QuizPageProps) {
           <ResultsComponent
             results={{
               totalQuestions: fetchedQuizData.length,
+              correctAnswers: correctAnswers,
+              wrongAnswers: wrongAnswers,
             }}
           />
         )}
