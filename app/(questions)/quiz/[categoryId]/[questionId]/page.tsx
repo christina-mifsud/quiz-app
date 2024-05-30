@@ -12,7 +12,7 @@ export type QuestionPageProps = {
 };
 
 // pre-rendered at build time
-export async function getStaticPaths() {
+export async function generateStaticParams() {
   // get questions collection from firestore & make path for each
   const questions = await firestore?.collectionGroup("questions").get();
 
