@@ -35,8 +35,8 @@ export default async function AllCategoriesPage() {
 
   return (
     <div className="quizzes-container">
-      <h1>Pick a Quiz</h1>
       <div className="quiz-cards">
+        <h1>Pick a Quiz</h1>
         {data.length &&
           data.map((category) => (
             <Link
