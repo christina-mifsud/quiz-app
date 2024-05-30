@@ -23,10 +23,7 @@ export async function generateStaticParams() {
     },
   }));
 
-  return {
-    paths,
-    fallback: true, // do I have to make a fallback? (I don't think I've set one)
-  };
+  return paths;
 }
 
 // fetches data (answers for specific question)
