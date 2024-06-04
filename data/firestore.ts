@@ -11,12 +11,18 @@ export async function fetchDocumentFromFirestore(
 
 export async function fetchUserExperiencePoints(userId: string) {
   const userDocument = await fetchDocumentFromFirestore("users", userId);
+  if (!userDocument) {
+    throw new Error(`User document with ID ${userId} not found`);
+  }
   return userDocument.experiencePoints;
 }
 
 export async function fetchUserProgress(userId: string) {
   const userDocument = await fetchDocumentFromFirestore("progress", userId);
-  return userDocument.questionKey; // How do I target this key: '/desserts/question-one: true'
+  if (!userDocument) {
+    throw new Error(`User progress document with ID ${userId} not found`);
+  }
+  return userDocument.questionKey; // Adjust this based on actual data structure
 }
 
 export async function fetchCollectionFromFirestore(queryString: string) {

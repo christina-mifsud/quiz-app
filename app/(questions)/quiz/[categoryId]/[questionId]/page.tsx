@@ -12,7 +12,7 @@ export type QuestionPageProps = {
 };
 
 // pre-rendered at build time
-export async function getStaticPaths() {
+export async function generateStaticParams() {
   // get questions collection from firestore & make path for each
   const questions = await firestore?.collectionGroup("questions").get();
 
@@ -23,10 +23,7 @@ export async function getStaticPaths() {
     },
   }));
 
-  return {
-    paths,
-    fallback: true, // do I have to make a fallback? (I don't think I've set one)
-  };
+  return paths;
 }
 
 // fetches data (answers for specific question)
@@ -57,7 +54,8 @@ export default async function QuestionPage({ params }: QuestionPageProps) {
             question={fetchedAnswerData?.question}
             answers={fetchedAnswerData?.answers}
             correctAns={fetchedAnswerData?.correctAns}
-            // questionId={`/${categoryId}/${questionId}`}
+            questionId={""}
+            currentUser={""}
           />
         </div>
       </div>

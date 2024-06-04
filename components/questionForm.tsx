@@ -1,20 +1,28 @@
 // as QuestionsAndResultsPage is server-side and we'd like to keep it that way, we are fetching the data from Firestore as normal during server-side rendering & passing said data as props to this client-side component to handle the results logic etc.
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, SetStateAction } from "react";
 import { db, increment } from "@/firebase/config";
 
-const QuestionForm = ({
+type QuestionFormProps = {
+  question: string;
+  answers: string[];
+  correctAns: string;
+  questionId: string;
+  currentUser: string;
+};
+
+const QuestionForm: React.FC<QuestionFormProps> = ({
   question,
   answers,
   correctAns,
   questionId,
   currentUser,
 }) => {
-  const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [countDown, setCountDown] = useState(5);
 
-  const onAnswerSelected = (answer) => {
+  const onAnswerSelected = (answer: string) => {
     console.log("Answer selected:", answer);
     setSelectedAnswer(answer);
   };
