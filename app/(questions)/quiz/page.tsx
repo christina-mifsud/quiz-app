@@ -1,6 +1,7 @@
 import "@/styles/quiz.scss";
 import { firestore } from "@/firebase/admin-config";
 import Link from "next/link";
+import withAuth from "@/components/withAuth";
 
 // firestore setup
 // - quiz (collection)
@@ -25,15 +26,15 @@ async function getAllCategories() {
 }
 
 // fetches catagories data obtained from prev function & renders something based on data
-export default async function AllCategoriesPage() {
-  const data = await getAllCategories();
-
+// export default async function AllCategoriesPage() {
+function AllCategoriesPage({ data }) {
+  // const data = await getAllCategories();
   return (
     <div className="quizzes-container">
       <div className="quiz-cards">
         <h1>Pick a Quiz</h1>
         {data.length &&
-          data.map((category) => (
+          data.map((category: string) => (
             <Link
               legacyBehavior
               // dynamic routing
@@ -49,3 +50,10 @@ export default async function AllCategoriesPage() {
     </div>
   );
 }
+
+export async function getServerSideProps() {
+  const data = await getAllCategories();
+  return { props: { data } };
+}
+
+export default withAuth(AllCategoriesPage);
