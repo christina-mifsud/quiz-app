@@ -1,7 +1,10 @@
+"use client";
+
 import "@/styles/quiz.scss";
 import { firestore } from "@/firebase/admin-config";
 import Link from "next/link";
-import withAuth from "@/components/withAuth";
+import { useAuth } from "@/contexts/AuthContext";
+import { useEffect, useState } from "react";
 
 // firestore setup
 // - quiz (collection)
@@ -26,15 +29,25 @@ async function getAllCategories() {
 }
 
 // fetches catagories data obtained from prev function & renders something based on data
-// export default async function AllCategoriesPage() {
-function AllCategoriesPage({ data }) {
-  // const data = await getAllCategories();
+export default function AllCategoriesPage() {
+  const { currentUser } = useAuth();
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    if (currentUser) {
+      getAllCategories().then(setData);
+    }
+  }, [currentUser]);
+
+  if (!currentUser) {
+    return <div>Loading...</div>;
+  }
   return (
     <div className="quizzes-container">
       <div className="quiz-cards">
         <h1>Pick a Quiz</h1>
         {data.length &&
-          data.map((category: string) => (
+          data.map((category: any) => (
             <Link
               legacyBehavior
               // dynamic routing
@@ -50,10 +63,3 @@ function AllCategoriesPage({ data }) {
     </div>
   );
 }
-
-export async function getServerSideProps() {
-  const data = await getAllCategories();
-  return { props: { data } };
-}
-
-export default withAuth(AllCategoriesPage);
