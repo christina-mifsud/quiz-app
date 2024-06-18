@@ -11,6 +11,9 @@ export const AuthContext = createContext<AuthContextValue | undefined>(
 // useAuth Hook - person requesting access to AuthProvider (manager) instead of directly managing the authentication state (going directly for access)
 export function useAuth() {
   const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
   return context;
 }
 
@@ -29,7 +32,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const value: AuthContextValue = {
     currentUser,
-    setCurrentUser: undefined,
+    setCurrentUser,
   };
 
   // if (loading) {

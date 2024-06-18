@@ -19,8 +19,12 @@ import { firestore } from "@/firebase/admin-config";
 //         - answers (field) eg. ["pavlova", "tiramisu", "madeleine"]
 //         - correctAns (field) eg. "madeleine"
 
+interface Category {
+  id: string;
+}
+
 // fetch all quiz categories from quiz collection (eg. fruit etc.) & map over them
-async function getAllCategories() {
+async function getAllCategories(): Promise<Category[]> {
   const collectionRef = await firestore.collection("quiz").get();
   return collectionRef.docs.map((doc) => ({
     // getting id which is then used for dynamic routing in the <Link>
@@ -31,7 +35,7 @@ async function getAllCategories() {
 // fetches catagories data obtained from prev function & renders something based on data
 export default function AllCategoriesPage() {
   const { currentUser } = useAuth();
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<Category[]>([]);
 
   useEffect(() => {
     if (currentUser) {
