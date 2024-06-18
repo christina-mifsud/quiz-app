@@ -1,10 +1,10 @@
 "use client";
 
 import "@/styles/quiz.scss";
-import { firestore } from "@/firebase/admin-config";
 import Link from "next/link";
 import { useAuth } from "@/contexts/AuthContext";
 import { useEffect, useState } from "react";
+import { firestore } from "@/firebase/admin-config";
 
 // firestore setup
 // - quiz (collection)
@@ -42,6 +42,7 @@ export default function AllCategoriesPage() {
   if (!currentUser) {
     return <div>Loading...</div>;
   }
+
   return (
     <div className="quizzes-container">
       <div className="quiz-cards">
