@@ -4,7 +4,6 @@ import "@/styles/quiz.scss";
 import Link from "next/link";
 import { useAuth } from "@/contexts/AuthContext";
 import { useEffect, useState } from "react";
-import { firestore } from "@/firebase/admin-config";
 
 // firestore setup
 // - quiz (collection)
@@ -23,27 +22,25 @@ interface Category {
   id: string;
 }
 
-// fetch all quiz categories from quiz collection (eg. fruit etc.) & map over them
-async function getAllCategories(): Promise<Category[]> {
-  const collectionRef = await firestore.collection("quiz").get();
-  return collectionRef.docs.map((doc) => ({
-    // getting id which is then used for dynamic routing in the <Link>
-    id: doc.id,
-  }));
-}
-
 // fetches catagories data obtained from prev function & renders something based on data
 export default function AllCategoriesPage() {
   const { currentUser } = useAuth();
   const [data, setData] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // client-side fetching data from API to keep everything separate
     if (currentUser) {
-      getAllCategories().then(setData);
+      fetch("/api/getCategories")
+        .then((response) => response.json())
+        .then((data: Category[]) => {
+          setData(data);
+          setLoading(false);
+        });
     }
   }, [currentUser]);
 
-  if (!currentUser) {
+  if (!currentUser || loading) {
     return <div>Loading...</div>;
   }
 
@@ -51,8 +48,8 @@ export default function AllCategoriesPage() {
     <div className="quizzes-container">
       <div className="quiz-cards">
         <h1>Pick a Quiz</h1>
-        {data.length &&
-          data.map((category: any) => (
+        {data.length > 0 &&
+          data.map((category) => (
             <Link
               legacyBehavior
               // dynamic routing
