@@ -10,7 +10,11 @@ export const AuthContext = createContext<AuthContextValue | undefined>(
 
 // useAuth Hook - person requesting access to AuthProvider (manager) instead of directly managing the authentication state (going directly for access)
 export function useAuth() {
-  return useContext(AuthContext);
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
 }
 
 // AuthProvider Component - manager of access - keeping track of who has access/is logged in etc through useAuth Hook.
@@ -18,7 +22,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [currentUser, setCurrentUser] = useState<firebase.User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  ////// HELP!! What is happening here?
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setCurrentUser(user);
@@ -27,10 +30,17 @@ export function AuthProvider({ children }: AuthProviderProps) {
     return unsubscribe;
   }, []);
 
-  const value: AuthContextValue = { currentUser, setCurrentUser };
+  const value: AuthContextValue = {
+    currentUser,
+    setCurrentUser,
+  };
+
+  // if (loading) {
+  //   return <div>Loading...</div>;
+  // }
 
   return (
-    <AuthContext.Provider value={{ currentUser, setCurrentUser }}>
+    <AuthContext.Provider value={value}>
       {!loading && children}
     </AuthContext.Provider>
   );

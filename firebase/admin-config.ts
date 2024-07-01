@@ -1,3 +1,5 @@
+// server side firebase
+
 import admin from "firebase-admin";
 
 if (!admin.apps.length) {
@@ -11,4 +13,9 @@ if (!admin.apps.length) {
   });
 }
 
-export const firestore = admin.firestore();
+const firestore = admin.firestore(); // necessary for db interaction
+const adminAuth = admin.auth(); // necessary for checking if user is authenticated
+
+// export { firestore, adminAuth };
+// export { firestore };
+export { adminAuth, firestore };

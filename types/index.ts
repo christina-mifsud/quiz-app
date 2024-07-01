@@ -2,9 +2,10 @@ import "firebase/auth";
 import firebase from "firebase";
 
 export interface AuthContextValue {
-  currentUser: firebase.User | null; //// HELP!! This is giving me an error.
-  setCurrentUser: any;
+  currentUser: firebase.User | null;
+  setCurrentUser: (user: firebase.User | null) => void;
 }
+
 export interface AuthProviderProps {
   children: React.ReactNode;
 }
