@@ -30,14 +30,17 @@ export function AuthProvider({ children }: AuthProviderProps) {
     return unsubscribe;
   }, []);
 
+  const logout = () => {
+    auth.signOut().then(() => {
+      setCurrentUser(null);
+    });
+  };
+
   const value: AuthContextValue = {
     currentUser,
     setCurrentUser,
+    logout,
   };
-
-  // if (loading) {
-  //   return <div>Loading...</div>;
-  // }
 
   return (
     <AuthContext.Provider value={value}>

@@ -1,6 +1,7 @@
 "use client";
 
 import "@/styles/quiz.scss";
+import "@/styles/auth.scss";
 import Link from "next/link";
 import { useAuth } from "@/contexts/AuthContext";
 import { useEffect, useState } from "react";
@@ -25,7 +26,7 @@ interface Category {
 
 // fetches catagories data obtained from prev function & renders something based on data
 export default function AllCategoriesPage() {
-  const { currentUser } = useAuth();
+  const { currentUser, logout } = useAuth();
   const [data, setData] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
@@ -50,23 +51,28 @@ export default function AllCategoriesPage() {
   }
 
   return (
-    <div className="quizzes-container">
-      <div className="quiz-cards">
-        <h1>Pick a Quiz</h1>
-        {data.length > 0 &&
-          data.map((category) => (
-            <Link
-              legacyBehavior
-              // dynamic routing
-              href={`/quiz/${category.id}`}
-              key={category.id}
-            >
-              <a className="quiz-card">
-                <h3>{category?.id}</h3>
-              </a>
-            </Link>
-          ))}
+    <>
+      <div className="auth-nav-bar">
+        <button onClick={logout}>Log Out</button>
       </div>
-    </div>
+      <div className="quizzes-container">
+        <div className="quiz-cards">
+          <h1>Pick a Quiz</h1>
+          {data.length > 0 &&
+            data.map((category) => (
+              <Link
+                legacyBehavior
+                // dynamic routing
+                href={`/quiz/${category.id}`}
+                key={category.id}
+              >
+                <a className="quiz-card">
+                  <h3>{category?.id}</h3>
+                </a>
+              </Link>
+            ))}
+        </div>
+      </div>
+    </>
   );
 }
