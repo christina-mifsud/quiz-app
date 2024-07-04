@@ -1,9 +1,11 @@
 "use client";
 
 import "@/styles/quiz.scss";
+import "@/styles/auth.scss";
 import Link from "next/link";
 import { useAuth } from "@/contexts/AuthContext";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 // firestore setup
 // - quiz (collection)
@@ -24,44 +26,53 @@ interface Category {
 
 // fetches catagories data obtained from prev function & renders something based on data
 export default function AllCategoriesPage() {
-  const { currentUser } = useAuth();
+  const { currentUser, logout } = useAuth();
   const [data, setData] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
-    // client-side fetching data from API to keep everything separate
-    if (currentUser) {
-      fetch("/api/getCategories")
-        .then((response) => response.json())
-        .then((data: Category[]) => {
-          setData(data);
-          setLoading(false);
-        });
+    if (!currentUser) {
+      router.push("/"); // redirect to home if not logged in
+      return;
     }
-  }, [currentUser]);
 
-  if (!currentUser || loading) {
-    return <div>Loading...</div>;
+    // client-side fetching data from API to keep client-side & server-side separate
+    fetch("/api/getCategories")
+      .then((response) => response.json())
+      .then((data: Category[]) => {
+        setData(data);
+        setLoading(false);
+      });
+  }, [currentUser, router]);
+
+  if (loading) {
+    return <div>Log In or Sign Up</div>; // TODO - more user friendly/appealing
   }
 
   return (
-    <div className="quizzes-container">
-      <div className="quiz-cards">
-        <h1>Pick a Quiz</h1>
-        {data.length > 0 &&
-          data.map((category) => (
-            <Link
-              legacyBehavior
-              // dynamic routing
-              href={`/quiz/${category.id}`}
-              key={category.id}
-            >
-              <a className="quiz-card">
-                <h3>{category?.id}</h3>
-              </a>
-            </Link>
-          ))}
+    <>
+      <div className="auth-nav-bar">
+        <button onClick={logout}>Log Out</button>
       </div>
-    </div>
+      <div className="quizzes-container">
+        <div className="quiz-cards">
+          <h1>Pick a Quiz</h1>
+          {data.length > 0 &&
+            data.map((category) => (
+              <Link
+                legacyBehavior
+                // dynamic routing
+                href={`/quiz/${category.id}`}
+                key={category.id}
+              >
+                <a className="quiz-card">
+                  <h3>{category?.id}</h3>
+                </a>
+              </Link>
+            ))}
+        </div>
+      </div>
+    </>
   );
 }

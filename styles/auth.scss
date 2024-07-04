@@ -46,3 +46,27 @@
     }
   }
 }
+
+.auth-nav-bar {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 2rem;
+  padding: 1.5rem 1.5rem 0 0;
+  background-color: #1b1a18;
+
+  button {
+    width: 10rem;
+    padding: 1rem;
+    background: #ff9051;
+    border-radius: 0.6rem;
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+    &:hover {
+      background-color: #ff935c;
+    }
+  }
+}
