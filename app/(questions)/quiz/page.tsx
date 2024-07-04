@@ -4,6 +4,7 @@ import "@/styles/quiz.scss";
 import Link from "next/link";
 import { useAuth } from "@/contexts/AuthContext";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 // firestore setup
 // - quiz (collection)
@@ -27,21 +28,25 @@ export default function AllCategoriesPage() {
   const { currentUser } = useAuth();
   const [data, setData] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
-    // client-side fetching data from API to keep everything separate
-    if (currentUser) {
-      fetch("/api/getCategories")
-        .then((response) => response.json())
-        .then((data: Category[]) => {
-          setData(data);
-          setLoading(false);
-        });
+    if (!currentUser) {
+      router.push("/"); // redirect to home if not logged in
+      return;
     }
-  }, [currentUser]);
 
-  if (!currentUser || loading) {
-    return <div>Loading...</div>;
+    // client-side fetching data from API to keep client-side & server-side separate
+    fetch("/api/getCategories")
+      .then((response) => response.json())
+      .then((data: Category[]) => {
+        setData(data);
+        setLoading(false);
+      });
+  }, [currentUser, router]);
+
+  if (loading) {
+    return <div>Log In or Sign Up</div>; // TODO - more user friendly/appealing
   }
 
   return (
