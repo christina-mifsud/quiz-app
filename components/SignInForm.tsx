@@ -1,15 +1,15 @@
 "use client";
 
-import { useRef, useState, MouseEvent } from "react";
+import { useRef, MouseEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useSignin } from "@/hooks/useSignin";
-import { auth } from "@/firebase/config";
+import { useAuth } from "@/hooks/useAuth";
 
 const SignInForm = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const { signin, isLoading: isLoadingSignin } = useSignin();
-  const [error, setError] = useState<string>("");
+  const { currentUser } = useAuth();
   const router = useRouter();
 
   async function handleSignIn(event: MouseEvent) {
@@ -18,13 +18,13 @@ const SignInForm = () => {
     const password = passwordRef.current?.value
 
     if (email && password) {
-      const authResponse = await auth.signInWithEmailAndPassword(email, password);
+      await signin(email, password);
 
-      if (!authResponse.user) {
-        throw new Error('User not found')
+      if (!currentUser) {
+        throw new Error('User not found');
       }
 
-      const idToken = await authResponse.user.getIdToken();
+      const idToken = await currentUser.getIdToken();
 
       const response = await fetch('/api/auth/signin', {
         method: 'POST',
