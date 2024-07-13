@@ -1,3 +1,14 @@
+.page-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  background-color: #1b1a18;
+  padding: 2rem 0;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
 .quizzes-container {
   display: flex;
   flex-direction: column;
