@@ -3,6 +3,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { firestore } from "@/firebase/admin-config";
 
+// 'handler' function will be called whenever request is made to this API route
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
