@@ -2,32 +2,33 @@
 
 import { useRef, useState, MouseEvent } from "react";
 import { useRouter } from "next/navigation";
-import { auth } from "@/firebase/config";
+import { useAuth } from "@/hooks/useAuth";
+import { useSignin } from "@/hooks/useSignin";
 
 const SignInForm = () => {
+  const router = useRouter();
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
-  const router = useRouter();
   const [error, setError] = useState<string>("");
+  const { currentUser } = useAuth();
 
   async function handleSignIn(event: MouseEvent) {
     event.preventDefault();
 
     if (emailRef.current?.value && passwordRef.current?.value) {
       try {
-        // handling sign in with firebase auth within component itself
-        // HELP - so I am no longer using the custom hook I made????
-        const authResponse = await auth.signInWithEmailAndPassword(
+        // handling sign in with firebase auth with useSignin hook
+        const authResponse = await signin(
           emailRef.current?.value,
           passwordRef.current?.value
         );
 
-        if (!authResponse.user) {
+        if (!currentUser) {
           throw new Error("User not found");
         }
 
         // get token from authenticated user
-        const idToken = await authResponse.user.getIdToken();
+        const idToken = await currentUser.getIdToken();
 
         // send said token to API to create session cookie
         const response = await fetch("/api/auth/signin", {

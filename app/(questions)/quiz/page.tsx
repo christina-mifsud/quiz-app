@@ -58,9 +58,9 @@ export default function AllCategoriesPage() {
       });
   }, [currentUser, router]);
 
-  // if (loading) {
-  //   return <div>Log In or Sign Up</div>; // TODO - more user friendly/appealing
-  // }
+  if (loading) {
+    return <div>Log In or Sign Up</div>; // TODO - more user friendly/appealing
+  }
 
   return (
     <>
