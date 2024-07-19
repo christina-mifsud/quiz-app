@@ -38,17 +38,29 @@ export default function AllCategoriesPage() {
     }
 
     // client-side fetching data from API to keep client-side & server-side separate
-    fetch("/api/getCategories")
-      .then((response) => response.json())
+    // only fetch categories if user is logged in
+    console.log("Fetching categories...");
+    fetch("api/getCategories")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch categories");
+        }
+        return response.json();
+      })
       .then((data: Category[]) => {
+        console.log("Fetched categories:", data);
         setData(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("FAILEDDDDD to fetch categories:", error);
         setLoading(false);
       });
   }, [currentUser, router]);
 
-  if (loading) {
-    return <div>Log In or Sign Up</div>; // TODO - more user friendly/appealing
-  }
+  // if (loading) {
+  //   return <div>Log In or Sign Up</div>; // TODO - more user friendly/appealing
+  // }
 
   return (
     <>

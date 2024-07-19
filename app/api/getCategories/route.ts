@@ -1,13 +1,9 @@
 // API route to handle firestore data fetching to make sure server-side code remains server-side & client-side code can fetch data from this API
 
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextResponse } from "next/server";
 import { firestore } from "@/firebase/admin-config";
 
-// 'handler' function will be called whenever request is made to this API route
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export async function GET() {
   try {
     // fetch all quiz categories from quiz collection (eg. fruit etc.) & map over them
     const collectionRef = await firestore.collection("quiz").get();
@@ -15,8 +11,12 @@ export default async function handler(
       // getting id which is then used for dynamic routing in the <Link>
       id: doc.id,
     }));
-    res.status(200).json(categories);
+    return NextResponse.json(categories);
   } catch (error) {
-    res.status(500).json({ error: "Failed to fetch categories" });
+    console.error("ERROR fetching categories:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch categories" },
+      { status: 500 }
+    );
   }
 }
