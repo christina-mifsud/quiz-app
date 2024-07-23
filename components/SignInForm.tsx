@@ -4,6 +4,7 @@ import { useRef, useState, MouseEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { useSignin } from "@/hooks/useSignin";
+import Link from "next/link";
 
 const SignInForm = () => {
   const router = useRouter();
@@ -63,7 +64,16 @@ const SignInForm = () => {
       <button onClick={(event: MouseEvent) => handleSignIn(event)}>
         Sign In
       </button>
+      <p>
+        Don't have an account?{" "}
+        <Link href="/signup">
+          <span className="sign-up-link">Sign Up</span>
+        </Link>
+      </p>
     </>
   );
 };
 export default SignInForm;
+function signin(value: string, value1: string) {
+  throw new Error("Function not implemented.");
+}

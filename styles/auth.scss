@@ -45,6 +45,20 @@
       background-color: #ff935c;
     }
   }
+
+  p {
+    color: #ffffff;
+    font-size: 1rem;
+    padding-top: 1rem;
+
+    .sign-up-link {
+      color: #ff9051;
+    }
+
+    .sign-in-link {
+      color: #ff9051;
+    }
+  }
 }
 
 .auth-nav-bar {
