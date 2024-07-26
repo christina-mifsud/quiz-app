@@ -3,6 +3,7 @@
 import { useRef, useState, MouseEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useSignup } from "@/hooks/useSignup";
+import Link from "next/link";
 
 // react hook forms
 
@@ -41,6 +42,12 @@ const SignUpForm = () => {
       <button onClick={(event: MouseEvent) => handleSignUp(event)}>
         Sign Up
       </button>
+      <p>
+        Already have an account?{" "}
+        <Link href="/signin">
+          <span className="sign-in-link">Sign In</span>
+        </Link>
+      </p>
     </>
   );
 };

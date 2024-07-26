@@ -38,10 +38,22 @@ export default function AllCategoriesPage() {
     }
 
     // client-side fetching data from API to keep client-side & server-side separate
-    fetch("/api/getCategories")
-      .then((response) => response.json())
+    // only fetch categories if user is logged in
+    console.log("Fetching categories...");
+    fetch("api/getCategories")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch categories");
+        }
+        return response.json();
+      })
       .then((data: Category[]) => {
+        console.log("Fetched categories:", data);
         setData(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("FAILEDDDDD to fetch categories:", error);
         setLoading(false);
       });
   }, [currentUser, router]);
@@ -55,22 +67,24 @@ export default function AllCategoriesPage() {
       <div className="auth-nav-bar">
         <button onClick={logout}>Log Out</button>
       </div>
-      <div className="quizzes-container">
-        <div className="quiz-cards">
-          <h1>Pick a Quiz</h1>
-          {data.length > 0 &&
-            data.map((category) => (
-              <Link
-                legacyBehavior
-                // dynamic routing
-                href={`/quiz/${category.id}`}
-                key={category.id}
-              >
-                <a className="quiz-card">
-                  <h3>{category?.id}</h3>
-                </a>
-              </Link>
-            ))}
+      <div className="page-container">
+        <div className="quizzes-container">
+          <div className="quiz-cards">
+            <h1>Pick a Quiz</h1>
+            {data.length > 0 &&
+              data.map((category) => (
+                <Link
+                  legacyBehavior
+                  // dynamic routing
+                  href={`/quiz/${category.id}`}
+                  key={category.id}
+                >
+                  <a className="quiz-card">
+                    <h3>{category?.id}</h3>
+                  </a>
+                </Link>
+              ))}
+          </div>
         </div>
       </div>
     </>
