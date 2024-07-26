@@ -1,4 +1,4 @@
-import SignInForm from "@/components/SignInForm";
+import { SignInForm } from "@/components/SignInForm";
 import "@/styles/auth.scss";
 export default async function SignInPage() {
   return (

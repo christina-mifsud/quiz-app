@@ -6,27 +6,27 @@ import { useAuth } from "@/hooks/useAuth";
 import { useSignin } from "@/hooks/useSignin";
 import Link from "next/link";
 
-const SignInForm = () => {
+
+export const SignInForm = () => {
   const router = useRouter();
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState<string>("");
   const { currentUser } = useAuth();
+  const { signin, error: SigninError} = useSignin();
+
+  console.log(currentUser);
 
   async function handleSignIn(event: MouseEvent) {
     event.preventDefault();
+    const email = emailRef.current?.value;
+    const password = passwordRef.current?.value
 
-    if (emailRef.current?.value && passwordRef.current?.value) {
-      try {
+    if (email && password) {
         // handling sign in with firebase auth with useSignin hook
-        const authResponse = await signin(
-          emailRef.current?.value,
-          passwordRef.current?.value
-        );
+        await signin(email, password);
 
-        if (!currentUser) {
-          throw new Error("User not found");
-        }
+        if (!currentUser) throw new Error("User not found");
 
         // get token from authenticated user
         const idToken = await currentUser.getIdToken();
@@ -45,10 +45,6 @@ const SignInForm = () => {
         }
 
         router.push("/quiz");
-      } catch (error) {
-        console.error("Sign-in error:", error);
-        setError("Failed! Check email & password");
-      }
     } else {
       setError("Fill in both username & password.");
     }
@@ -56,16 +52,18 @@ const SignInForm = () => {
 
   return (
     <>
-      {error && <div>{error}</div>}
 
       <input type="email" placeholder="Email" ref={emailRef} required />
       <input type="" placeholder="Password" ref={passwordRef} required />
+
+      {error && <div>{error}</div>}
+      {SigninError && <div>{SigninError}</div>}
 
       <button onClick={(event: MouseEvent) => handleSignIn(event)}>
         Sign In
       </button>
       <p>
-        Don't have an account?{" "}
+        {`Don't`} have an account?{" "}
         <Link href="/signup">
           <span className="sign-up-link">Sign Up</span>
         </Link>
@@ -73,7 +71,4 @@ const SignInForm = () => {
     </>
   );
 };
-export default SignInForm;
-function signin(value: string, value1: string) {
-  throw new Error("Function not implemented.");
-}
+
