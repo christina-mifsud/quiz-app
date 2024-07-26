@@ -1,4 +1,5 @@
 import React from "react";
+import "@/styles/results.scss";
 
 type ResultsProps = {
   results: {
@@ -10,7 +11,7 @@ type ResultsProps = {
 
 const ResultsComponent: React.FC<ResultsProps> = ({ results }) => {
   return (
-    <div>
+    <div className="results-card">
       <h3>Overall Result</h3>
       <p>Total Questions: {results.totalQuestions}</p>
       <p>Correct Answers: {results.correctAnswers}</p>

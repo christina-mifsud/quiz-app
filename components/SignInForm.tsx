@@ -1,24 +1,40 @@
 "use client";
 
-import { useRef, useState, MouseEvent } from "react";
+import { useRef, MouseEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useSignin } from "@/hooks/useSignin";
+import { useAuth } from "@/hooks/useAuth";
 
 const SignInForm = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const { signin, isLoading: isLoadingSignin } = useSignin();
-  const [error, setError] = useState<string>("");
+  const { currentUser } = useAuth();
   const router = useRouter();
 
   async function handleSignIn(event: MouseEvent) {
     event.preventDefault();
+    const email = emailRef.current?.value;
+    const password = passwordRef.current?.value
 
-    if (emailRef.current?.value && passwordRef.current?.value) {
-      await signin(emailRef.current?.value, passwordRef.current?.value);
+    if (email && password) {
+      await signin(email, password);
+
+      if (!currentUser) {
+        throw new Error('User not found');
+      }
+
+      const idToken = await currentUser.getIdToken();
+
+      const response = await fetch('/api/auth/signin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ idToken })
+      });
+
       router.push("/quiz");
-    } else {
-      setError("Wrong Password!");
     }
   }
 

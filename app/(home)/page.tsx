@@ -1,15 +1,18 @@
-import ProfileForm from "@/components/profileForm";
 import "@/styles/profile.scss";
+import { AuthCheck } from "@/components/AuthCheck";
 
 export default async function Home() {
   return (
     <main>
-      <div className="profile-container">
-        <div className="profile-card">
-          <h1>Hey there!</h1>
-          <ProfileForm />
+      <AuthCheck fallback={(
+        <h1>You need to be signed it</h1>
+      )}>
+        <div className="profile-container">
+          <div className="profile-card">
+            <h1>Hey there!</h1>
+          </div>
         </div>
-      </div>
+      </AuthCheck>
     </main>
   );
 }

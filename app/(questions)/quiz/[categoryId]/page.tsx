@@ -1,4 +1,6 @@
 import "@/styles/quiz.scss";
+import "@/styles/results.scss";
+
 import { firestore } from "@/firebase/admin-config";
 import Link from "next/link";
 import {
@@ -39,33 +41,35 @@ export default async function QuizPage({ params }: QuizPageProps) {
 
   return (
     <>
-      <div className="quizzes-container">
-        <div className="quiz-cards">
-          <h1>Quiz Category: {categoryId}</h1>
-          {/* QuizContainer */}
-          {fetchedQuizData?.length > 0 &&
-            fetchedQuizData?.map((question) => (
-              <>
-                <ProgressCheck
-                  questionSlug={`/${categoryId}/${question.id}`}
-                  progressSlugs={userProgressCollection}
-                  id={question.id}
-                />
-              </>
-            ))}
+      <div className="page-container">
+        <div className="quizzes-container">
+          <div className="quiz-cards">
+            <h1>Quiz Category: {categoryId}</h1>
+            {/* QuizContainer */}
+            {fetchedQuizData?.length > 0 &&
+              fetchedQuizData?.map((question) => (
+                <>
+                  <ProgressCheck
+                    questionSlug={`/${categoryId}/${question.id}`}
+                    progressSlugs={userProgressCollection}
+                    id={question.id}
+                  />
+                </>
+              ))}
+          </div>
         </div>
-      </div>
-      <div>
-        {/* ResultsComponent */}
-        {results && (
-          <ResultsComponent
-            results={{
-              totalQuestions: fetchedQuizData.length,
-              correctAnswers: correctAnswers,
-              wrongAnswers: wrongAnswers,
-            }}
-          />
-        )}
+        <div className="results-container">
+          {/* ResultsComponent */}
+          {results && (
+            <ResultsComponent
+              results={{
+                totalQuestions: fetchedQuizData.length,
+                correctAnswers: correctAnswers,
+                wrongAnswers: wrongAnswers,
+              }}
+            />
+          )}
+        </div>
       </div>
     </>
   );
