@@ -55,22 +55,24 @@ export default function AllCategoriesPage() {
       <div className="auth-nav-bar">
         <button onClick={logout}>Log Out</button>
       </div>
-      <div className="quizzes-container">
-        <div className="quiz-cards">
-          <h1>Pick a Quiz</h1>
-          {data.length > 0 &&
-            data.map((category) => (
-              <Link
-                legacyBehavior
-                // dynamic routing
-                href={`/quiz/${category.id}`}
-                key={category.id}
-              >
-                <a className="quiz-card">
-                  <h3>{category?.id}</h3>
-                </a>
-              </Link>
-            ))}
+      <div className="page-container">
+        <div className="quizzes-container">
+          <div className="quiz-cards">
+            <h1>Pick a Quiz</h1>
+            {data.length > 0 &&
+              data.map((category) => (
+                <Link
+                  legacyBehavior
+                  // dynamic routing
+                  href={`/quiz/${category.id}`}
+                  key={category.id}
+                >
+                  <a className="quiz-card">
+                    <h3>{category?.id}</h3>
+                  </a>
+                </Link>
+              ))}
+          </div>
         </div>
       </div>
     </>
