@@ -5,10 +5,10 @@ import QuestionCard from "@/components/questionCard";
 // import ResultsComponent from "@/components/ResultsComponent";
 
 export type QuestionPageProps = {
-  params: {
+  params: Promise<{
     categoryId: string;
     questionId: string;
-  };
+  }>;
 };
 
 // pre-rendered at build time
@@ -37,7 +37,7 @@ async function fetchQuestionData(categoryId: string, questionId: string) {
 }
 
 export default async function QuestionPage({ params }: QuestionPageProps) {
-  const { categoryId, questionId } = params;
+  const { categoryId, questionId } = await params;
   const fetchedAnswerData = await fetchQuestionData(categoryId, questionId);
 
   // console.log("Single Question (FetchedAnswerDataaaaa):", fetchedAnswerData);

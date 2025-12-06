@@ -2,7 +2,7 @@ import { adminAuth } from '@/firebase/admin-config';
 import { cookies } from 'next/headers';
 
 export async function getUserServerSide() {
-    const sessionCookie = cookies().get('__sessionTest')
+    const sessionCookie = (await cookies()).get('__sessionTest')
 
     let user = null;
 

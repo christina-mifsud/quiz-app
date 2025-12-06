@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 // FIREBASE
 import { adminAuth } from '@/firebase/admin-config';
 
-export async function POST(req: Request, res: Response) {
+export async function POST(req: Request) {
   const { idToken } = await req.json();
   const decodedFirebaseToken = await adminAuth.verifyIdToken(idToken);
 
@@ -13,7 +13,7 @@ export async function POST(req: Request, res: Response) {
     const cookieToken = await adminAuth.createSessionCookie(idToken, { expiresIn });
     const options = { maxAge: expiresIn, httpOnly: true, secure: true, path: '/' };
 
-    cookies().set('__sessionTest', cookieToken, options);
+    (await cookies()).set('__sessionTest', cookieToken, options);
 
     return new Response('Authentication Successful', { status: 200 });
   } else {
@@ -22,6 +22,6 @@ export async function POST(req: Request, res: Response) {
 }
 
 export async function DELETE(req: Request) {
-  cookies().delete('__sessionTest');
+  (await cookies()).delete('__sessionTest');
   return new Response('Session Deleted', { status: 200 });
 }

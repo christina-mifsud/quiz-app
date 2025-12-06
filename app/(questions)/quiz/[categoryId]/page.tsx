@@ -13,14 +13,14 @@ import ResultsComponent from "@/components/ResultsComponent";
 import { ProgressCheck } from "./_components/progress-check";
 
 export type QuizPageProps = {
-  params: {
+  params: Promise<{
     categoryId: string;
-  };
+  }>;
 };
 
 // page component to show quiz questions
 export default async function QuizPage({ params }: QuizPageProps) {
-  const { categoryId } = params;
+  const { categoryId } = await params;
 
   const fetchedQuizData = await fetchCollectionFromFirestore(
     `quiz/${categoryId}/questions`
